@@ -12,6 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         //
+        Schema::create('actions', function (Blueprint $table) {
+            $table->id();
+            $table->string('name',20);
+            $table->integer('effect');
+            $table->integer('score')->nullable();
+            $table->timestamps();
+            
+        });
     }
 
     /**
@@ -20,5 +28,6 @@ return new class extends Migration
     public function down(): void
     {
         //
+        Schema::dropIfExists('actions');
     }
 };
