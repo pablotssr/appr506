@@ -16,9 +16,9 @@ return new class extends Migration
         //
         Schema::create('shops', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Item::class,'item1')->constrained()->deleteOnCascade();
-            $table->foreignIdFor(Item::class,'item2')->constrained()->deleteOnCascade();
-            $table->foreignIdFor(Item::class,'item3')->constrained()->deleteOnCascade();
+            $table->foreignIdFor(Item::class,'item1')->constrained('items')->deleteOnCascade();
+            $table->foreignIdFor(Item::class,'item2')->constrained('items')->deleteOnCascade();
+            $table->foreignIdFor(Item::class,'item3')->constrained('items')->deleteOnCascade();
             $table->foreignIdFor(Diary::class)->constrained()->deleteOnCascade();
             $table->timestamps();
         });
