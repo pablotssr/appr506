@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Diary extends Model
 {
     use HasFactory;
+
+    public function pet(){
+        return $this->belongsTo(Pet::class);
+    }
 }
