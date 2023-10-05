@@ -17,6 +17,7 @@ class AuthController extends Controller
 
     public function handleProviderCallback($provider)
 {
+    
     $user = Socialite::driver($provider)->user();
 
     // Check if a user with this email already exists

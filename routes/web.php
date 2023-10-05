@@ -30,8 +30,8 @@ Route::get('/maths', function(){
     return view('maths');
 });
 
-Route::get('login/{provider}', 'AuthController@redirectToProvider');
-Route::get('login/{provider}/callback', 'AuthController@handleProviderCallback');
+Route::get('login/{provider}', [AuthController::class, 'redirectToProvider']);
+Route::get('login/{provider}/callback', [AuthController::class, 'handleProviderCallback']);
 
 Route::get('/social-login', function () {
     return view('social-login');
