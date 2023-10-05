@@ -37,6 +37,6 @@ class AuthController extends Controller
         Auth::login($newUser);
     }
 
-    return redirect('/snake'); // Redirect to the dashboard after login
+    return redirect('/home'); // Redirect to the dashboard after login
 }
 }
