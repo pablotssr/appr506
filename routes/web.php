@@ -24,3 +24,7 @@ Route::get('/snake', function(){
 Route::get('/run', function(){
     return view('run');
 });
+
+Route::get('/maths', function(){
+    return view('maths');
+});

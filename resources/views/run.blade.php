@@ -23,8 +23,11 @@
 <body>
     <canvas id="gameCanvas"></canvas> <!-- Removed width and height attributes -->
     <div id="score">Score: 0</div>
+   
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            
             const canvas = document.getElementById('gameCanvas');
             const ctx = canvas.getContext('2d');
             let score = 0;  
