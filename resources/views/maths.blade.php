@@ -28,7 +28,7 @@
         let correctAnswers = 0;
         let score = 0;
         let timerWidth = 100;
-        const timerMaxWidth = 180; // Largeur maximale du timer (3 minutes en secondes)
+        const timerMaxWidth = 180; 
         let timerInterval;
 
         document.getElementById('startButton').addEventListener('click', startGame);
@@ -46,7 +46,6 @@
             const questionElement = document.getElementById('question');
             questionNumberElement.textContent = questionCount;
             
-            // Générer les nombres et l'opérateur en fonction des contraintes
             const operator = getRandomOperator();
             let num1, num2;
             switch (operator) {
@@ -82,17 +81,17 @@
         }
 
         function startTimer() {
-    timerInterval = setInterval(() => {
-        if (timerWidth > 0) {
-            timerWidth -= (100 / timerMaxWidth);
-            const timerElement = document.getElementById('timer');
-            const scale = timerWidth / 100; // Calculate the scale factor
-            timerElement.style.transform = `scaleX(${scale})`; // Apply the scale transformation
-        } else {
-            endGame();
+            timerInterval = setInterval(() => {
+                if (timerWidth > 0) {
+                    timerWidth -= (100 / timerMaxWidth);
+                    const timerElement = document.getElementById('timer');
+                    const scale = timerWidth / 100; // Calculate the scale factor
+                    timerElement.style.transform = `scaleX(${scale})`; // Apply the scale transformation
+                } else {
+                    endGame();
+                }
+            }, 1000);
         }
-    }, 1000);
-}
 
         function endGame() {
             clearInterval(timerInterval);

@@ -24,22 +24,19 @@
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
             snake.forEach(segment => {
-                ctx.fillStyle = 'green';
+                ctx.fillStyle = 'black';
                 ctx.fillRect(segment.x, segment.y, 20, 20);
             });
 
             ctx.fillStyle = 'red';
             ctx.fillRect(food.x, food.y, 20, 20);
-
             document.getElementById('score').textContent = 'Score: ' + score;
         }
 
         function move() {
             const head = {x: snake[0].x + dx, y: snake[0].y + dy};
             snake.unshift(head);
-
             if (head.x === food.x && head.y === food.y) {
                 food = {x: Math.floor(Math.random() * 20) * 20, y: Math.floor(Math.random() * 20) * 20};
                 score += 1; 

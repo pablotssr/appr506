@@ -24,7 +24,6 @@
     <canvas id="gameCanvas"></canvas> <!-- Removed width and height attributes -->
     <div id="score">Score: 0</div>
    
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             
@@ -54,36 +53,34 @@
             }
 
             function drawDino() {
-    ctx.fillStyle = '#000';
-    ctx.fillRect(dinoX, dinoY - jumpHeight, 30, 20); // Set the dimensions to 20x20
-}
-
-function drawObstacle() {
-    ctx.fillStyle = '#000';
-    ctx.fillRect(obstacleX, groundY - obstacleHeight, obstacleWidth, obstacleHeight); // Adjusted obstacle height
-}
-
-function jump() {
-    if (!isJumping) {
-        isJumping = true;
-        jumpHeight = 0;
-        let jumpInterval = setInterval(function() {
-            jumpHeight += jumpSpeed;
-
-            // Adjust jump height based on jump key press duration
-            if (jumpHeight >= 60 || !isJumping) {
-                clearInterval(jumpInterval);
-                let fallInterval = setInterval(function() {
-                    jumpHeight -= 2;
-                    if (jumpHeight <= 0) {
-                        clearInterval(fallInterval);
-                        isJumping = false;
-                    }
-                }, 16);
+                ctx.fillStyle = '#000';
+                ctx.fillRect(dinoX, dinoY - jumpHeight, 30, 20); // Set the dimensions to 20x20
             }
-        }, 16);
-    }
-}
+
+            function drawObstacle() {
+                ctx.fillStyle = '#000';
+                ctx.fillRect(obstacleX, groundY - obstacleHeight, obstacleWidth, obstacleHeight); // Adjusted obstacle height
+            }
+
+            function jump() {
+                if (!isJumping) {
+                isJumping = true;
+                jumpHeight = 0;
+                    let jumpInterval = setInterval(function() {
+                    jumpHeight += jumpSpeed;
+                        if (jumpHeight >= 60 || !isJumping) {
+                            clearInterval(jumpInterval);
+                            let fallInterval = setInterval(function() {
+                                jumpHeight -= 2;
+                                if (jumpHeight <= 0) {
+                                    clearInterval(fallInterval);
+                                    isJumping = false;
+                                }
+                            }, 16);
+                        }   
+                    }, 16);
+                }
+            }
 
             function updateGameArea() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -91,10 +88,8 @@ function jump() {
                 drawDino();
                 drawObstacle();
                 obstacleX -= (3 + Math.floor(score / 100)); 
-
                 if (obstacleX < -20) {
                     obstacleX = canvas.width + Math.random() * 200;
-
                     if (Math.random() < 0.5) {
                         obstacleWidth = 40;
                     } else {
@@ -105,7 +100,6 @@ function jump() {
                     } else {
                         obstacleHeight = 20;
                     }
-
                     updateScore();
                 }
 
@@ -117,19 +111,19 @@ function jump() {
                     alert("Game Over!");
                 }
             }
+
             gameInterval = setInterval(updateGameArea, 16);
-
             document.addEventListener('keydown', function(event) {
-    if (event.keyCode === 32 || event.keyCode === 38) {
-        jump();
-    }
-});
+                if (event.keyCode === 32 || event.keyCode === 38) {
+                    jump();
+                }
+            });
 
-document.addEventListener('keyup', function(event) {
-    if (event.keyCode === 32 || event.keyCode === 38) {
-        isJumping = false;
-    }
-});
+            document.addEventListener('keyup', function(event) {
+                if (event.keyCode === 32 || event.keyCode === 38) {
+                    isJumping = false;
+                }
+            });
         });
     </script>
 </body>

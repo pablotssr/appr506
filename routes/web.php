@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,4 +28,11 @@ Route::get('/run', function(){
 
 Route::get('/maths', function(){
     return view('maths');
+});
+
+Route::get('login/{provider}', 'AuthController@redirectToProvider');
+Route::get('login/{provider}/callback', 'AuthController@handleProviderCallback');
+
+Route::get('/social-login', function () {
+    return view('social-login');
 });
