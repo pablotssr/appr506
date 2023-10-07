@@ -14,13 +14,11 @@ use App\Http\Controllers\EventController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+
+Route::middleware('auth:sanctum')->get('/api/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 Route::middleware('auth:api')->post('/tokens/create', function (Request $request) {
     $token = $request->user()->createToken($request->token_name);
@@ -28,3 +26,4 @@ Route::middleware('auth:api')->post('/tokens/create', function (Request $request
 });
 
 Route::get('/events', [EventController::class, 'index']);
+
