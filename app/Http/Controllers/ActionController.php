@@ -91,9 +91,10 @@ class ActionController extends Controller
         $before = $pet->mental;
 
         if($score < 10){
-            $pet->mental += $score;
+            $pet->mental -= $score;
             $pet->save();
             return response()->json([
+                'score'=> $score,
                 'message' => 'pas fou la game',
                 'changes' => [
                     'Mental avant' => $before,
@@ -105,6 +106,7 @@ class ActionController extends Controller
             $pet->mental += $score;
             $pet->save();
             return response()->json([
+                'score'=> $score,
                 'message' => 'mouais',
                 'changes' => [
                     'Mental avant' => $before,
@@ -116,6 +118,7 @@ class ActionController extends Controller
             $pet->mental += $score;
             $pet->save();
             return response()->json([
+                'score'=> $score,
                 'message' => 'ok gg',
                 'changes' => [
                     'Mental avant' => $before,
@@ -127,6 +130,7 @@ class ActionController extends Controller
             $pet->mental += $score;
             $pet->save();
             return response()->json([
+                'score'=> $score,
                 'message' => 'bravo champ',
                 'changes' => [
                     'Mental avant' => $before,
@@ -135,10 +139,121 @@ class ActionController extends Controller
                 'pet' => $pet], 200);
         }
   }
-    // public function run(Request $request){
-        
-    // }
-    // public function math(Request $request){
-        
-    // }
+  public function run(Request $request){
+    $user = Auth::user();
+    $pet = $user->pet;
+    $score = rand(0,40);
+
+    if (!$pet) {
+        return response()->json(['message' => 'User does not have a pet'], 400);
+    }
+
+    $run = Action::where('name','run')->first();
+    if(!$run){
+        return response()->json(['message' => 'not found'], 400);
+    }
+    $before = $pet->mental;
+
+    if($score < 10){
+        $pet->mental -= $score;
+        $pet->save();
+        return response()->json([
+            'score'=> $score,
+            'message' => 'pas fou la game',
+            'changes' => [
+                'Mental avant' => $before,
+                'Mental après' => $pet->mental
+            ],
+            'pet' => $pet], 200);
+    }
+    if($score >= 10 && $score < 30){
+        $pet->mental += 20;
+        $pet->save();
+        return response()->json([
+            'score'=> $score,
+            'message' => 'ok gg',
+            'changes' => [
+                'Mental avant' => $before,
+                'Mental après' => $pet->mental
+            ],
+            'pet' => $pet], 200);
+    }
+    if($score >= 30){
+        $pet->mental += 30;
+        $pet->save();
+        return response()->json([
+            'score'=> $score,
+            'message' => 'bravo champ',
+            'changes' => [
+                'Mental avant' => $before,
+                'Mental après' => $pet->mental
+            ],
+            'pet' => $pet], 200);
+    }
+}
+public function maths(Request $request){
+    $user = Auth::user();
+    $pet = $user->pet;
+    $score = rand(0,10);
+
+    if (!$pet) {
+        return response()->json(['message' => 'User does not have a pet'], 400);
+    }
+
+    $maths = Action::where('name','math')->first();
+    if(!$maths){
+        return response()->json(['message' => 'not found'], 400);
+    }
+    $before = $pet->mental;
+    $before2 = $pet->iq;
+
+    if($score == 0 || $score == 1 || $score == 2){
+        $pet->mental -= 10;
+        $pet->iq -= 15;
+        $pet->save();
+        return response()->json([
+            'score'=> $score,
+            'message' => 'eh beh',
+            'changes' => [
+                'Mental avant' => $before,
+                'Mental après' => $pet->mental,
+                'QI avant' => $before2,
+                'QI après' => $pet->iq,
+            ],
+            'pet' => $pet], 200);
+    }
+
+    if($score == 3 || $score == 4 || $score == 5 || $score == 6 || $score == 7 ){
+        $pet->mental += $score;
+        $pet->iq += $score*2;
+        $pet->save();
+        return response()->json([
+            'score'=> $score,
+            'message' => 'ok c correct',
+            'changes' => [
+                'Mental avant' => $before,
+                'Mental après' => $pet->mental,
+                'QI avant' => $before2,
+                'QI après' => $pet->iq,
+            ],
+            'pet' => $pet], 200);
+    }
+
+    if($score == 8 || $score == 9 || $score == 10){
+        $pet->mental += 15;
+        $pet->iq += $score*2;
+        $pet->save();
+        return response()->json([
+            'score'=> $score,
+            'message' => 'respect mon gars',
+            'changes' => [
+                'Mental avant' => $before,
+                'Mental après' => $pet->mental,
+                'QI avant' => $before2,
+                'QI après' => $pet->iq,
+            ],
+            'pet' => $pet], 200);
+    }
+
+}
 }

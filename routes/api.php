@@ -25,9 +25,20 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::get('/pet', [PetController::class, 'showOrCreate']);
 Route::post('/pet', [PetController::class,'store']);
 Route::post('/pet/kill',[PetController::class,'kill']);
-Route::post('/pet/laver', [ActionController::class, 'laver']);
-Route::post('/pet/caresser', [ActionController::class, 'caresse']);
-Route::post('/pet/snake', [ActionController::class, 'snake']);
+
+Route::post('/action/laver', [ActionController::class, 'laver']);
+Route::post('/action/caresser', [ActionController::class, 'caresse']);
+Route::post('/action/snake', [ActionController::class, 'snake']);
+Route::post('/action/run', [ActionController::class, 'run']);
+Route::post('/action/maths', [ActionController::class, 'maths']);
+
+Route::post('/event/sdf', [EventController::class, 'sdf']);
+Route::post('/event/love', [EventController::class, 'love']);
+Route::post('/event/dep', [EventController::class, 'dep']);
+Route::post('/event/pigeon', [EventController::class, 'pigeon']);
+Route::post('/event/coco', [EventController::class, 'coco']);
+Route::post('/event/best', [EventController::class, 'best']);
+Route::post('/event/trigger', [EventController::class, 'triggerEvent']);
 });
 
 Route::get('/events', [EventController::class, 'index']);
