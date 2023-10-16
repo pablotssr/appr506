@@ -18,8 +18,6 @@
     @csrf
     <button type="submit">Logout</button>
 </form>
-
-    <!-- Add other pet info here -->
 </body>
 
 </html>
