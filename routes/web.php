@@ -26,18 +26,23 @@ Route::get('/run', function(){
     return view('run');
 });
 
-Route::get('/home', function(){
-    return view('home');
-});
+
 Route::get('/maths', function(){
     return view('maths');
 });
 
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/home', function(){
+        return view('home');
+    });
+
     Route::get('/pets', [PetController::class, 'showOrCreate']);
+    Route::post('/pets', [PetController::class, 'store'])->name('pets.store');
 });
-Route::post('/pets', [PetController::class, 'store'])->name('pets.store');
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
 
 Route::get('login/{provider}', [AuthController::class, 'redirectToProvider']);
 Route::get('login/{provider}/callback', [AuthController::class, 'handleProviderCallback']);

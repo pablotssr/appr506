@@ -11,4 +11,5 @@
     <a href="{{ url('login/google') }}">Login with Google</a>
 
 </body>
+
 </html>
