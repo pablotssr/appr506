@@ -51,5 +51,17 @@ class Pet extends Model
                 $pet->$key = $value;
             }
         });
+
+        static::updating(function($pet){
+            $pet->health = min($pet->health, 100);
+            $pet->mental = min($pet->mental, 100);
+            $pet->iq = min($pet->iq, 150);
+            $pet->clean = min($pet->clean, 100);
+
+            $pet->health = max($pet->health, 0);
+            $pet->mental = max($pet->mental, 0);
+            $pet->iq = max($pet->iq, 0);
+            $pet->clean = max($pet->clean, 0);
+        });
     }
 }

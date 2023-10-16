@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PetController;
+use App\Http\Controllers\ActionController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,6 +25,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::get('/pet', [PetController::class, 'showOrCreate']);
 Route::post('/pet', [PetController::class,'store']);
 Route::post('/pet/kill',[PetController::class,'kill']);
+Route::post('/pet/laver', [ActionController::class, 'laver']);
+Route::post('/pet/caresser', [ActionController::class, 'caresse']);
+Route::post('/pet/snake', [ActionController::class, 'snake']);
 });
 
 Route::get('/events', [EventController::class, 'index']);

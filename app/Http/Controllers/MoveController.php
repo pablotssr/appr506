@@ -9,9 +9,5 @@ use Illuminate\Http\Request;
 class MoveController extends Controller
 {
     //
-    public function firstAction(Request $request){
-        $user = Auth::user();
-        $pet = $user->pet;
-        
-    }
+    
 }
