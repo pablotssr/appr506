@@ -6,6 +6,8 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\ActionController;
+use App\Http\Controllers\ItemController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -38,7 +40,10 @@ Route::post('/event/dep', [EventController::class, 'dep']);
 Route::post('/event/pigeon', [EventController::class, 'pigeon']);
 Route::post('/event/coco', [EventController::class, 'coco']);
 Route::post('/event/best', [EventController::class, 'best']);
+
 Route::post('/event/trigger', [EventController::class, 'triggerEvent']);
+
+Route::post('/item/shop', [ItemController::class, 'createShop']);
 });
 
 Route::get('/events', [EventController::class, 'index']);

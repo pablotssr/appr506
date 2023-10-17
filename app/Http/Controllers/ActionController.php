@@ -92,9 +92,13 @@ class ActionController extends Controller
 
         if($score < 10){
             $pet->mental -= $score;
+            $user->gold += $score;
+            $user->save();
             $pet->save();
             return response()->json([
                 'score'=> $score,
+                'argent gagné' => $score,
+                'Argent total' => $user->gold,
                 'message' => 'pas fou la game',
                 'changes' => [
                     'Mental avant' => $before,
@@ -104,9 +108,13 @@ class ActionController extends Controller
         }
         if($score >= 10 && $score < 20){
             $pet->mental += $score;
+            $user->gold += $score;
+            $user->save();
             $pet->save();
             return response()->json([
                 'score'=> $score,
+                'argent gagné' => $score,
+                'Argent total' => $user->gold,
                 'message' => 'mouais',
                 'changes' => [
                     'Mental avant' => $before,
@@ -116,9 +124,13 @@ class ActionController extends Controller
         }
         if($score >= 20 && $score < 30){
             $pet->mental += $score;
+            $user->gold += $score;
+            $user->save();
             $pet->save();
             return response()->json([
                 'score'=> $score,
+                'argent gagné' => $score,
+                'Argent total' => $user->gold,
                 'message' => 'ok gg',
                 'changes' => [
                     'Mental avant' => $before,
@@ -128,9 +140,13 @@ class ActionController extends Controller
         }
         if($score >= 30 && $score <= 40){
             $pet->mental += $score;
+            $user->gold += $score;
+            $user->save();
             $pet->save();
             return response()->json([
                 'score'=> $score,
+                'argent gagné' => $score,
+                'Argent total' => $user->gold,
                 'message' => 'bravo champ',
                 'changes' => [
                     'Mental avant' => $before,
