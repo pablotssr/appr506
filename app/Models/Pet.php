@@ -25,6 +25,9 @@ class Pet extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function diary(){
+        return $this->hasMany(Diary::class);
+    }
     public function randomColor(){
         $color = sprintf('#%06X',mt_rand(0, 0xFFFFFF));
         return $color;
