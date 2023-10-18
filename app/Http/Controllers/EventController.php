@@ -21,12 +21,12 @@ class EventController extends Controller
 
         // Define the probabilities for each event
         $eventProbabilities = [
-            'sdf' => 0.2,  // 20% chance of 'sdf' event
-            'love' => 0.3, // 30% chance of 'love' event
-            'pigeon' => 0.2, // 10% chance of 'pigeon' event
-            'covid' => 0.1, // 10% chance of 'covid' event
-            'dep' => 0.1, // 20% chance of 'dep' event
-            'best' => 0.1, // 10% chance of 'best' event
+            'sdf' => 0.2, 
+            'love' => 0.3, 
+            'pigeon' => 0.2, 
+            'covid' => 0.1, 
+            'dep' => 0.1, 
+            'best' => 0.1, 
         ];
 
         // Randomly select an event based on probabilities

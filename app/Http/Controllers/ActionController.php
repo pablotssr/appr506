@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Action;
+use App\Models\Inventory;
+use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -72,9 +74,142 @@ class ActionController extends Controller
 
      }
 
-    // public function giveItem(Request $request){
-        
-    // }
+     public function giveItem(Request $request){
+        $user = Auth::user();
+        $pet = $user->pet;
+
+        if (!$pet) {
+            return response()->json(['message' => 'User does not have a pet'], 400);
+        }
+
+        $give = Action::where('name','give object')->first();
+        if(!$give){
+            return response()->json(['message' => 'not found'], 400);
+        }
+
+        $donner = $request->input('give'); 
+
+        $item = Inventory::find($donner);
+
+        if (!$item) {
+            return response()->json(['message' => 'Item not found'], 404);
+        }  
+
+        $b = Item::where('id',$item->item_id)->first();
+    
+        if($item->item_id == 1){
+            $before = $pet->mental;
+            if ($pet->mental == 100) {
+                return response()->json(['message' => 'il est déjà o max pas besoin','pet' => $pet], 200);
+            }
+            $pet->mental += $b->effect;
+            $pet->save();
+            return response()->json([
+                'tu a donné' => "{$b->name} à {$pet->name}",
+                'changes' => [
+                    'Mental avant' => $before,
+                    'Mental après' => $pet->mental
+                ],
+                'pet' => $pet], 200);
+        }
+
+        if($item->item_id == 2){
+            $before = $pet->mental;
+            
+            $pet->mental -= $b->effect;
+            $pet->save();
+            return response()->json([
+                'tu a donné' => "{$b->name} à {$pet->name}",
+                'changes' => [
+                    'Mental avant' => $before,
+                    'Mental après' => $pet->mental
+                ],
+                'pet' => $pet], 200);
+        }
+
+        if($item->item_id == 3){
+            $before = $pet->mental;
+            $before2 = $pet->health;
+
+            if ($pet->mental == 100 || $pet->health == 100) {
+                return response()->json(['message' => 'il est déjà o max pas besoin','pet' => $pet], 200);
+            }
+            $pet->mental += $b->effect;
+            $pet->health += ($b->effect)/3;
+            $pet->save();
+            return response()->json([
+                'tu a donné' => "{$b->name} à {$pet->name}",
+                'changes' => [
+                    'Mental avant' => $before,
+                    'Mental après' => $pet->mental,
+                    'Santé avant' => $before2,
+                    'Santé après' => $pet->health
+                ],
+                'pet' => $pet], 200);
+        }
+
+        if($item->item_id == 4){
+            $before = $pet->mental;
+            $before2 = $pet->health;
+
+            
+            $pet->mental -= $b->effect;
+            $pet->health -= ($b->effect)/2;
+            $pet->save();
+            $item->delete();
+            return response()->json([
+                'tu a donné' => "{$b->name} à {$pet->name}",
+                'changes' => [
+                    'Mental avant' => $before,
+                    'Mental après' => $pet->mental,
+                    'Santé avant' => $before2,
+                    'Santé après' => $pet->health
+                ],
+                'pet' => $pet], 200);
+        }
+
+        if($item->item_id == 5){
+            $before = $pet->mental;
+            $before2 = $pet->health;
+
+            if ($pet->health == 100) {
+                return response()->json(['message' => 'il est déjà o max pas besoin','pet' => $pet], 200);
+            }
+            $pet->mental += ($b->effect)/2;
+            $pet->health += $b->effect;
+            $pet->save();
+            return response()->json([
+                'tu a donné' => "{$b->name} à {$pet->name}",
+                'changes' => [
+                    'Mental avant' => $before,
+                    'Mental après' => $pet->mental,
+                    'Santé avant' => $before2,
+                    'Santé après' => $pet->health
+                ],
+                'pet' => $pet], 200);
+        }
+
+        if($item->item_id == 6){
+            $before = $pet->mental;
+            $before2 = $pet->health;
+
+            if ($pet->health == 100) {
+                return response()->json(['message' => 'il est déjà o max pas besoin','pet' => $pet], 200);
+            }
+            $pet->mental += ($b->effect)/2;
+            $pet->health += $b->effect;
+            $pet->save();
+            return response()->json([
+                'tu a donné' => "{$b->name} à {$pet->name}",
+                'changes' => [
+                    'Mental avant' => $before,
+                    'Mental après' => $pet->mental,
+                    'Santé avant' => $before2,
+                    'Santé après' => $pet->health
+                ],
+                'pet' => $pet], 200);
+        }
+ }
  public function snake(Request $request){
         $user = Auth::user();
         $pet = $user->pet;

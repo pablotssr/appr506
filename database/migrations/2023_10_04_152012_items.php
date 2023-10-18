@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name',30);
             $table->integer('price');
+            $table->integer('effect');
             $table->string('type');
             $table->timestamps();
         });

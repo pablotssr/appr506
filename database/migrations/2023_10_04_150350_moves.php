@@ -19,13 +19,13 @@ return new class extends Migration
         //
         Schema::create('moves', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Action::class,'action1')->constrained('actions')->deleteOnCascade();
-            $table->foreignIdFor(Action::class,'action2')->constrained('actions')->deleteOnCascade();
+            $table->foreignIdFor(Action::class,'action1')->nullable()->constrained('actions')->deleteOnCascade();
+            $table->foreignIdFor(Action::class,'action2')->nullable()->constrained('actions')->deleteOnCascade();
             $table->foreignIdFor(User::class)->constrained()->deleteOnCascade();
             $table->foreignIdFor(Pet::class)->constrained()->deleteOnCascade();
             $table->integer('score')->nullable();
             $table->foreignIdFor(Event::class)->nullable()->deleteOnCascade();
-            $table->foreignIdFor(Diary::class)->constrained()->deleteOnCascade();
+            $table->foreignIdFor(Diary::class)->nullable()->constrained()->deleteOnCascade();
             $table->timestamps();
         });
     }

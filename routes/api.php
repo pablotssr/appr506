@@ -33,6 +33,7 @@ Route::post('/action/caresser', [ActionController::class, 'caresse']);
 Route::post('/action/snake', [ActionController::class, 'snake']);
 Route::post('/action/run', [ActionController::class, 'run']);
 Route::post('/action/maths', [ActionController::class, 'maths']);
+Route::post('/action/give', [ActionController::class, 'giveItem']);
 
 Route::post('/event/sdf', [EventController::class, 'sdf']);
 Route::post('/event/love', [EventController::class, 'love']);
@@ -44,6 +45,9 @@ Route::post('/event/best', [EventController::class, 'best']);
 Route::post('/event/trigger', [EventController::class, 'triggerEvent']);
 
 Route::post('/item/shop', [ItemController::class, 'createShop']);
+Route::post('/item/shop/see', [ItemController::class, 'viewShop']);
+Route::post('/item/inventory/see', [ItemController::class, 'viewInventory']);
+Route::post('/item/buy', [ItemController::class, 'achat']);
 });
 
 Route::get('/events', [EventController::class, 'index']);
