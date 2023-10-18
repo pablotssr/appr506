@@ -20,14 +20,7 @@ class EventController extends Controller
         }
 
         // Define the probabilities for each event
-        $eventProbabilities = [
-            'sdf' => 0.2, 
-            'love' => 0.3, 
-            'pigeon' => 0.2, 
-            'covid' => 0.1, 
-            'dep' => 0.1, 
-            'best' => 0.1, 
-        ];
+        $eventProbabilities = config('events.probabilities');
 
         // Randomly select an event based on probabilities
         $selectedEvent = $this->selectEvent($eventProbabilities);
@@ -136,7 +129,6 @@ class EventController extends Controller
             }
         }
     
-
     private function pigeon($pet)
     {
         $user = Auth::user();
@@ -155,7 +147,7 @@ class EventController extends Controller
         $pet->clean -= $pigeon->effect;
         $pet->save();
         return response()->json([
-            'event name' => 'pigeon encounter',
+            'event_name' => 'pigeon encounter',
             'message' => 'un pigeon est passé au dessus',
                     'changes' => [
                         'Propreté avant' => $before,
@@ -244,17 +236,31 @@ class EventController extends Controller
         
     }
 
-    // public function money(Request $request)
-    // {
-    //     $user = Auth::user();
-    //     $pet = $user->pet;
+     public function money($pet)
+     {
+         $user = Auth::user();
+         $pet = $user->pet;
 
-    //     if (!$pet) {
-    //         return response()->json(['message' => 'User does not have a pet'], 400);
-    //     }
+         if (!$pet) {
+             return response()->json(['message' => 'User does not have a pet'], 400);
+         }
+         $riche = Event::where('name','moneyEncounter')->first();
+         if (!$riche) {
+            return response()->json(['message' => 'not found'], 400);
+        }
+        $before = $user->gold;
+        $user->gold += $riche->effect;
+        $user->save();
+        return response()->json([
+            'event name' => 'c la deche?',
+            'message' => 'le vilain billet qui traine par terre',
+            'changes' => [
+                'Argent avant' => $before,
+                'Argent après' => $user->gold,
+            ]
+        ], 200);
 
-        
-    // }
+    }
 
     private function best($pet)
     {

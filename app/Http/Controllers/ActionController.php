@@ -8,6 +8,7 @@ use App\Models\Item;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\DiaryController;
+use App\Http\Controllers\EventController;
 
 class ActionController extends Controller
 {
@@ -35,23 +36,39 @@ class ActionController extends Controller
         $pet->clean += $laver->effect;
         $pet->save();
 
+
+        if (rand(1, 10) <= 3) {
+            $eventController = new EventController();
+            $eventResult = $eventController->triggerEvent($request);
+            $eventContent = json_decode($eventResult->getContent(), true);
+            $responseb = [
+                'event' => $eventContent,
+                'message' => 'ptite douche c tt clean la',
+                'changes' => [
+                    'Propreté avant' => $before,
+                    'Propreté après' => $pet->clean
+                ],
+                'pet' => $pet,
+            ];
+        } else {
+            $responseb = [
+                'message' => 'ptite douche c tt clean la',
+                'changes' => [
+                    'Propreté_avant' => $before,
+                    'Propreté_après' => $pet->clean
+                ],
+                'pet' => $pet
+            ];
+        }
+
         $actionDone = new DiaryController();
         $response = $actionDone->actionDone($laver);
 
         if ($response->getStatusCode() !== 200) {
-                        return $response;
+            return $response;
         }
 
-        return response()->json([
-            'message' => 'ptite douche c tt clean la',
-            'changes' => [
-                'Propreté avant' => $before,
-                'Propreté après' => $pet->clean
-            ],
-            'pet' => $pet
-        ], 200);
-
-
+        return response()->json($responseb, 200);
 
     }
 
@@ -77,21 +94,37 @@ class ActionController extends Controller
 
         $pet->mental += $caresse->effect;
         $pet->save();
+        if (rand(1, 10) <= 3) {
+            $eventController = new EventController();
+            $eventResult = $eventController->triggerEvent($request);
+            $eventContent = json_decode($eventResult->getContent(), true);
+            $responseb = [
+                'event' => $eventContent,
+                'message' => 'ptite tape sur le front la',
+                'changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental
+                ],
+                'pet' => $pet,
+            ];
+        } else {
+            $responseb = [
+                'message' => 'ptite tape sur le front la',
+                'changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental
+                ],
+                'pet' => $pet
+            ];
+        }
         $actionDone = new DiaryController();
         $response = $actionDone->actionDone($caresse);
 
         if ($response->getStatusCode() !== 200) {
-                        return $response;
+            return $response;
         }
 
-        return response()->json([
-            'message' => 'ptite tape sur le front la',
-            'changes' => [
-                'Mental avant' => $before,
-                'Mental après' => $pet->mental
-            ],
-            'pet' => $pet
-        ], 200);
+        return response()->json($responseb, 200);
 
     }
 
@@ -108,8 +141,9 @@ class ActionController extends Controller
         $actionDone = new DiaryController();
         $response = $actionDone->actionDone($give);
 
+
         if ($response->getStatusCode() !== 200) {
-                        return $response;
+            return $response;
         }
         if (!$give) {
             return response()->json(['message' => 'not found'], 400);
@@ -132,14 +166,32 @@ class ActionController extends Controller
             }
             $pet->mental += $b->effect;
             $pet->save();
-            return response()->json([
-                'tu a donné' => "{$b->name} à {$pet->name}",
-                'changes' => [
-                    'Mental avant' => $before,
-                    'Mental après' => $pet->mental
-                ],
-                'pet' => $pet
-            ], 200);
+            $item->delete();
+            if (rand(1, 10) <= 3) {
+                $eventController = new EventController();
+                $eventResult = $eventController->triggerEvent($request);
+                $eventContent = json_decode($eventResult->getContent(), true);
+                $responseb = [
+                    'event' => $eventContent,
+                    'tu a donné' => "{$b->name} à {$pet->name}",
+                    'changes' => [
+                        'Mental_avant' => $before,
+                        'Mental_après' => $pet->mental
+                    ],
+                    'pet' => $pet,
+                ];
+            } else {
+                $responseb = [
+                    'tu a donné' => "{$b->name} à {$pet->name}",
+                    'changes' => [
+                        'Mental_avant' => $before,
+                        'Mental_après' => $pet->mental
+                    ],
+                    'pet' => $pet
+                ];
+            }
+            return response()->json($responseb, 200);
+
         }
 
         if ($item->item_id == 2) {
@@ -147,14 +199,31 @@ class ActionController extends Controller
 
             $pet->mental -= $b->effect;
             $pet->save();
-            return response()->json([
-                'tu a donné' => "{$b->name} à {$pet->name}",
-                'changes' => [
-                    'Mental avant' => $before,
-                    'Mental après' => $pet->mental
-                ],
-                'pet' => $pet
-            ], 200);
+            $item->delete();
+            if (rand(1, 10) <= 3) {
+                $eventController = new EventController();
+                $eventResult = $eventController->triggerEvent($request);
+                $eventContent = json_decode($eventResult->getContent(), true);
+                $responseb = [
+                    'event' => $eventContent,
+                    'tu a donné' => "{$b->name} à {$pet->name}",
+                    'changes' => [
+                        'Mental_avant' => $before,
+                        'Mental_après' => $pet->mental
+                    ],
+                    'pet' => $pet,
+                ];
+            } else {
+                $responseb = [
+                    'tu a donné' => "{$b->name} à {$pet->name}",
+                    'changes' => [
+                        'Mental_avant' => $before,
+                        'Mental_après' => $pet->mental
+                    ],
+                    'pet' => $pet
+                ];
+            }
+            return response()->json($responseb, 200);
         }
 
         if ($item->item_id == 3) {
@@ -167,16 +236,35 @@ class ActionController extends Controller
             $pet->mental += $b->effect;
             $pet->health += ($b->effect) / 3;
             $pet->save();
-            return response()->json([
-                'tu a donné' => "{$b->name} à {$pet->name}",
-                'changes' => [
-                    'Mental avant' => $before,
-                    'Mental après' => $pet->mental,
-                    'Santé avant' => $before2,
-                    'Santé après' => $pet->health
-                ],
-                'pet' => $pet
-            ], 200);
+            $item->delete();
+            if (rand(1, 10) <= 3) {
+                $eventController = new EventController();
+                $eventResult = $eventController->triggerEvent($request);
+                $eventContent = json_decode($eventResult->getContent(), true);
+                $responseb = [
+                    'event' => $eventContent,
+                    'tu a donné' => "{$b->name} à {$pet->name}",
+                    'changes' => [
+                        'Mental_avant' => $before,
+                        'Mental_après' => $pet->mental,
+                        'Santé_avant' => $before2,
+                        'Santé_après' => $pet->health
+                    ],
+                    'pet' => $pet,
+                ];
+            } else {
+                $responseb = [
+                    'tu a donné' => "{$b->name} à {$pet->name}",
+                    'changes' => [
+                        'Mental_avant' => $before,
+                        'Mental_après' => $pet->mental,
+                        'Santé_avant' => $before2,
+                        'Santé_après' => $pet->health
+                    ],
+                    'pet' => $pet
+                ];
+            }
+            return response()->json($responseb, 200);
         }
 
         if ($item->item_id == 4) {
@@ -188,16 +276,34 @@ class ActionController extends Controller
             $pet->health -= ($b->effect) / 2;
             $pet->save();
             $item->delete();
-            return response()->json([
-                'tu a donné' => "{$b->name} à {$pet->name}",
-                'changes' => [
-                    'Mental avant' => $before,
-                    'Mental après' => $pet->mental,
-                    'Santé avant' => $before2,
-                    'Santé après' => $pet->health
-                ],
-                'pet' => $pet
-            ], 200);
+            if (rand(1, 10) <= 3) {
+                $eventController = new EventController();
+                $eventResult = $eventController->triggerEvent($request);
+                $eventContent = json_decode($eventResult->getContent(), true);
+                $responseb = [
+                    'event' => $eventContent,
+                    'tu a donné' => "{$b->name} à {$pet->name}",
+                    'changes' => [
+                        'Mental_avant' => $before,
+                        'Mental_après' => $pet->mental,
+                        'Santé_avant' => $before2,
+                        'Santé_après' => $pet->health
+                    ],
+                    'pet' => $pet,
+                ];
+            } else {
+                $responseb = [
+                    'tu a donné' => "{$b->name} à {$pet->name}",
+                    'changes' => [
+                        'Mental_avant' => $before,
+                        'Mental_après' => $pet->mental,
+                        'Santé_avant' => $before2,
+                        'Santé_après' => $pet->health
+                    ],
+                    'pet' => $pet
+                ];
+            }
+            return response()->json($responseb, 200);
         }
 
         if ($item->item_id == 5) {
@@ -210,16 +316,35 @@ class ActionController extends Controller
             $pet->mental += ($b->effect) / 2;
             $pet->health += $b->effect;
             $pet->save();
-            return response()->json([
-                'tu a donné' => "{$b->name} à {$pet->name}",
-                'changes' => [
-                    'Mental avant' => $before,
-                    'Mental après' => $pet->mental,
-                    'Santé avant' => $before2,
-                    'Santé après' => $pet->health
-                ],
-                'pet' => $pet
-            ], 200);
+            $item->delete();
+            if (rand(1, 10) <= 3) {
+                $eventController = new EventController();
+                $eventResult = $eventController->triggerEvent($request);
+                $eventContent = json_decode($eventResult->getContent(), true);
+                $responseb = [
+                    'event' => $eventContent,
+                    'tu a donné' => "{$b->name} à {$pet->name}",
+                    'changes' => [
+                        'Mental_avant' => $before,
+                        'Mental_après' => $pet->mental,
+                        'Santé_avant' => $before2,
+                        'Santé_après' => $pet->health
+                    ],
+                    'pet' => $pet,
+                ];
+            } else {
+                $responseb = [
+                    'tu a donné' => "{$b->name} à {$pet->name}",
+                    'changes' => [
+                        'Mental_avant' => $before,
+                        'Mental_après' => $pet->mental,
+                        'Santé_avant' => $before2,
+                        'Santé_après' => $pet->health
+                    ],
+                    'pet' => $pet
+                ];
+            }
+            return response()->json($responseb, 200);
         }
 
         if ($item->item_id == 6) {
@@ -232,16 +357,35 @@ class ActionController extends Controller
             $pet->mental += ($b->effect) / 2;
             $pet->health += $b->effect;
             $pet->save();
-            return response()->json([
-                'tu a donné' => "{$b->name} à {$pet->name}",
-                'changes' => [
-                    'Mental avant' => $before,
-                    'Mental après' => $pet->mental,
-                    'Santé avant' => $before2,
-                    'Santé après' => $pet->health
-                ],
-                'pet' => $pet
-            ], 200);
+            $item->delete();
+            if (rand(1, 10) <= 3) {
+                $eventController = new EventController();
+                $eventResult = $eventController->triggerEvent($request);
+                $eventContent = json_decode($eventResult->getContent(), true);
+                $responseb = [
+                    'event' => $eventContent,
+                    'tu a donné' => "{$b->name} à {$pet->name}",
+                    'changes' => [
+                        'Mental_avant' => $before,
+                        'Mental_après' => $pet->mental,
+                        'Santé_avant' => $before2,
+                        'Santé_après' => $pet->health
+                    ],
+                    'pet' => $pet,
+                ];
+            } else {
+                $responseb = [
+                    'tu a donné' => "{$b->name} à {$pet->name}",
+                    'changes' => [
+                        'Mental_avant' => $before,
+                        'Mental_après' => $pet->mental,
+                        'Santé_avant' => $before2,
+                        'Santé_après' => $pet->health
+                    ],
+                    'pet' => $pet
+                ];
+            }
+            return response()->json($responseb, 200);
         }
     }
     public function snake(Request $request)
@@ -263,7 +407,7 @@ class ActionController extends Controller
         $response = $actionDone->actionDone($snake);
 
         if ($response->getStatusCode() !== 200) {
-                        return $response;
+            return $response;
         }
         if ($score < 10) {
             $pet->mental -= $score;
@@ -271,71 +415,75 @@ class ActionController extends Controller
             $user->gold += $score;
             $user->save();
             $pet->save();
-            return response()->json([
-                'score' => $score,
-                'argent gagné' => $score,
-                'Argent total' => $user->gold,
-                'message' => 'pas fou la game',
-                'changes' => [
-                    'Mental avant' => $before,
-                    'Mental après' => $pet->mental
-                ],
-                'pet' => $pet
-            ], 200);
+            if (rand(1, 10) <= 3) {
+                $eventController = new EventController();
+                $eventResult = $eventController->triggerEvent($request);
+                $eventContent = json_decode($eventResult->getContent(), true);
+                $responseb = [
+                    'event' => $eventContent,
+                    'score' => $score,
+                    'argent_gagné' => $score,
+                    'Argent_total' => $user->gold,
+                    'message' => 'pas fou la game',
+                    'changes' => [
+                        'Mental_avant' => $before,
+                        'Mental_après' => $pet->mental
+                    ],
+                    'pet' => $pet,
+                ];
+            } else {
+                $responseb = [
+                    'score' => $score,
+                    'argent_gagné' => $score,
+                    'Argent_total' => $user->gold,
+                    'message' => 'pas fou la game',
+                    'changes' => [
+                        'Mental_avant' => $before,
+                        'Mental_après' => $pet->mental
+
+                    ],
+                    'pet' => $pet
+                ];
+            }
+            return response()->json($responseb, 200);
         }
-        if ($score >= 10 && $score < 20) {
+        if ($score >= 10) {
             $pet->mental += $score;
             $pet->clean -= 10;
             $user->gold += $score;
             $user->save();
             $pet->save();
-            return response()->json([
-                'score' => $score,
-                'argent gagné' => $score,
-                'Argent total' => $user->gold,
-                'message' => 'mouais',
-                'changes' => [
-                    'Mental avant' => $before,
-                    'Mental après' => $pet->mental
-                ],
-                'pet' => $pet
-            ], 200);
-        }
-        if ($score >= 20 && $score < 30) {
-            $pet->mental += $score;
-            $pet->clean -= 10;
-            $user->gold += $score;
-            $user->save();
-            $pet->save();
-            return response()->json([
-                'score' => $score,
-                'argent gagné' => $score,
-                'Argent total' => $user->gold,
-                'message' => 'ok gg',
-                'changes' => [
-                    'Mental avant' => $before,
-                    'Mental après' => $pet->mental
-                ],
-                'pet' => $pet
-            ], 200);
-        }
-        if ($score >= 30 && $score <= 40) {
-            $pet->mental += $score;
-            $pet->clean -= 10;
-            $user->gold += $score;
-            $user->save();
-            $pet->save();
-            return response()->json([
-                'score' => $score,
-                'argent gagné' => $score,
-                'Argent total' => $user->gold,
-                'message' => 'bravo champ',
-                'changes' => [
-                    'Mental avant' => $before,
-                    'Mental après' => $pet->mental
-                ],
-                'pet' => $pet
-            ], 200);
+            if (rand(1, 10) <= 3) {
+                $eventController = new EventController();
+                $eventResult = $eventController->triggerEvent($request);
+                $eventContent = json_decode($eventResult->getContent(), true);
+                $responseb = [
+                    'event' => $eventContent,
+                    'score' => $score,
+                    'argent_gagné' => $score,
+                    'Argent_total' => $user->gold,
+                    'message' => 'gg champ',
+                    'changes' => [
+                        'Mental_avant' => $before,
+                        'Mental_après' => $pet->mental
+                    ],
+                    'pet' => $pet,
+                ];
+            } else {
+                $responseb = [
+                    'score' => $score,
+                    'argent gagné' => $score,
+                    'Argent total' => $user->gold,
+                    'message' => 'gg champ',
+                    'changes' => [
+                        'Mental_avant' => $before,
+                        'Mental_après' => $pet->mental
+
+                    ],
+                    'pet' => $pet
+                ];
+            }
+            return response()->json($responseb, 200);
         }
     }
     public function run(Request $request)
@@ -357,48 +505,70 @@ class ActionController extends Controller
         $response = $actionDone->actionDone($run);
 
         if ($response->getStatusCode() !== 200) {
-                        return $response;
+            return $response;
         }
         if ($score < 10) {
             $pet->mental -= $score;
             $pet->clean -= 10;
             $pet->save();
-            return response()->json([
-                'score' => $score,
+            if (rand(1, 10) <= 3) {
+                $eventController = new EventController();
+                $eventResult = $eventController->triggerEvent($request);
+                $eventContent = json_decode($eventResult->getContent(), true);
+                $responseb = [
+                    'event' => $eventContent,
+                    'score' => $score,
                 'message' => 'pas fou la game',
                 'changes' => [
-                    'Mental avant' => $before,
-                    'Mental après' => $pet->mental
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental
                 ],
                 'pet' => $pet
-            ], 200);
-        }
-        if ($score >= 10 && $score < 30) {
-            $pet->mental += 20;
-            $pet->save();
-            return response()->json([
-                'score' => $score,
-                'message' => 'ok gg',
+                ];
+            } else {
+                $responseb = [
+                    'score' => $score,
+                'message' => 'pas fou la game',
                 'changes' => [
-                    'Mental avant' => $before,
-                    'Mental après' => $pet->mental
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental
                 ],
                 'pet' => $pet
-            ], 200);
+                ];
+            }
+            return response()->json($responseb, 200);
         }
-        if ($score >= 30) {
-            $pet->mental += 30;
-            $pet->clean -= 10;
+        if ($score >= 15) {
+            $pet->mental += $score;
+            $pet->clean -= 15;
             $pet->save();
-            return response()->json([
-                'score' => $score,
-                'message' => 'bravo champ',
+            
+            if (rand(1, 10) <= 3) {
+                $eventController = new EventController();
+                $eventResult = $eventController->triggerEvent($request);
+                $eventContent = json_decode($eventResult->getContent(), true);
+                $responseb = [
+                    'event' => $eventContent,
+                    'score' => $score,
+                'message' => 'gg',
                 'changes' => [
-                    'Mental avant' => $before,
-                    'Mental après' => $pet->mental
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental
                 ],
                 'pet' => $pet
-            ], 200);
+                ];
+            } else {
+                $responseb = [
+                    'score' => $score,
+                'message' => 'g',
+                'changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental
+                ],
+                'pet' => $pet
+                ];
+            }
+            return response()->json($responseb, 200);
         }
     }
     public function maths(Request $request)
@@ -422,58 +592,115 @@ class ActionController extends Controller
         $response = $actionDone->actionDone($maths);
 
         if ($response->getStatusCode() !== 200) {
-                        return $response;
+            return $response;
         }
 
         if ($score == 0 || $score == 1 || $score == 2) {
             $pet->mental -= 10;
             $pet->iq -= 15;
             $pet->save();
-            return response()->json([
-                'score' => $score,
+            if (rand(1, 10) <= 3) {
+                $eventController = new EventController();
+                $eventResult = $eventController->triggerEvent($request);
+                $eventContent = json_decode($eventResult->getContent(), true);
+                $responseb = [
+                    'event' => $eventContent,
+                    'score' => $score,
                 'message' => 'eh beh',
                 'changes' => [
-                    'Mental avant' => $before,
-                    'Mental après' => $pet->mental,
-                    'QI avant' => $before2,
-                    'QI après' => $pet->iq,
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental,
+                    'QI_avant' => $before2,
+                    'QI_après' => $pet->iq,
                 ],
                 'pet' => $pet
-            ], 200);
+                ];
+            } else {
+                $responseb = [
+                    'score' => $score,
+                'message' => 'eh beh',
+                'changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental,
+                    'QI_avant' => $before2,
+                    'QI_après' => $pet->iq,
+                ],
+                'pet' => $pet
+                ];
+            }
+            return response()->json($responseb, 200);
         }
 
         if ($score == 3 || $score == 4 || $score == 5 || $score == 6 || $score == 7) {
             $pet->mental += $score;
             $pet->iq += $score * 2;
             $pet->save();
-            return response()->json([
-                'score' => $score,
-                'message' => 'ok c correct',
+            if (rand(1, 10) <= 3) {
+                $eventController = new EventController();
+                $eventResult = $eventController->triggerEvent($request);
+                $eventContent = json_decode($eventResult->getContent(), true);
+                $responseb = [
+                    'event' => $eventContent,
+                    'score' => $score,
+                'message' => 'ok',
                 'changes' => [
-                    'Mental avant' => $before,
-                    'Mental après' => $pet->mental,
-                    'QI avant' => $before2,
-                    'QI après' => $pet->iq,
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental,
+                    'QI_avant' => $before2,
+                    'QI_après' => $pet->iq,
                 ],
                 'pet' => $pet
-            ], 200);
+                ];
+            } else {
+                $responseb = [
+                    'score' => $score,
+                'message' => 'ok',
+                'changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental,
+                    'QI_avant' => $before2,
+                    'QI_après' => $pet->iq,
+                ],
+                'pet' => $pet
+                ];
+            }
+            return response()->json($responseb, 200);
         }
 
         if ($score == 8 || $score == 9 || $score == 10) {
             $pet->mental += 15;
             $pet->iq += $score * 2;
             $pet->save();
-            return response()->json([
-                'score' => $score,
-                'message' => 'respect mon gars',
+            if (rand(1, 10) <= 3) {
+                $eventController = new EventController();
+                $eventResult = $eventController->triggerEvent($request);
+                $eventContent = json_decode($eventResult->getContent(), true);
+                $responseb = [
+                    'event' => $eventContent,
+                    'score' => $score,
+                'message' => 'gg',
                 'changes' => [
-                    'Mental avant' => $before,
-                    'Mental après' => $pet->mental,
-                    'QI avant' => $before2,
-                    'QI après' => $pet->iq,
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental,
+                    'QI_avant' => $before2,
+                    'QI_après' => $pet->iq,
                 ],
                 'pet' => $pet
-            ], 200);
+                ];
+            } else {
+                $responseb = [
+                    'score' => $score,
+                'message' => 'gg',
+                'changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental,
+                    'QI_avant' => $before2,
+                    'QI_après' => $pet->iq,
+                ],
+                'pet' => $pet
+                ];
+            }
+            return response()->json($responseb, 200);
         }
 
     }

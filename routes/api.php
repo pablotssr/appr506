@@ -41,6 +41,7 @@ Route::post('/event/dep', [EventController::class, 'dep']);
 Route::post('/event/pigeon', [EventController::class, 'pigeon']);
 Route::post('/event/coco', [EventController::class, 'coco']);
 Route::post('/event/best', [EventController::class, 'best']);
+Route::post('/event/money', [EventController::class, 'money']);
 
 Route::post('/event/trigger', [EventController::class, 'triggerEvent']);
 
