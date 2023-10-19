@@ -22,6 +22,10 @@ class Pet extends Model
         'clean',
     ];
 
+    protected $casts = [
+        'alive'=> 'boolean',
+        ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -43,7 +47,8 @@ class Pet extends Model
             'health' => rand(75, 100),
             'mental' => rand(50, 100),
             'iq' => rand(20, 150),
-            'clean' => rand(75, 100)
+            'clean' => rand(75, 100),
+            'alive' => true
         ];
     }
 
@@ -68,9 +73,7 @@ class Pet extends Model
             $pet->clean = min($pet->clean, 100);
 
             if ($pet->health == 0 || $pet->mental == 0) {
-    
-                $pet->diary()->where('pet_id', $pet->id)->delete();
-                $pet->delete();
+                $pet->alive = false;
             } else {
                 $pet->health = max($pet->health, 0);
                 $pet->mental = max($pet->mental, 0);

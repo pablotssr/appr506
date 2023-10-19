@@ -19,13 +19,10 @@ class EventController extends Controller
             return response()->json(['message' => 'User does not have a pet'], 400);
         }
 
-        // Define the probabilities for each event
         $eventProbabilities = config('events.probabilities');
 
-        // Randomly select an event based on probabilities
         $selectedEvent = $this->selectEvent($eventProbabilities);
 
-        // Trigger the selected event
         return $this->$selectedEvent($pet);
     }
 
@@ -41,9 +38,9 @@ class EventController extends Controller
             }
         }
 
-        // This should never happen if probabilities sum to 1
         return null;
     }
+
     private function sdf($pet)
     {
         $user = Auth::user();
@@ -87,7 +84,7 @@ class EventController extends Controller
                     'pet' => $pet
                 ], 200);
             }
-        } 
+    } 
 
     private function love($pet)
     {
@@ -132,7 +129,7 @@ class EventController extends Controller
                     'pet' => $pet
                 ], 200);
             }
-        }
+    }
     
     private function pigeon($pet)
     {
@@ -245,8 +242,8 @@ class EventController extends Controller
         
     }
 
-     public function money($pet)
-     {
+    public function money($pet)
+    {
          $user = Auth::user();
          $pet = $user->pet;
 
@@ -312,5 +309,5 @@ class EventController extends Controller
                     ],
                     'pet' => $pet
                 ], 200);
-}
+    }
 }

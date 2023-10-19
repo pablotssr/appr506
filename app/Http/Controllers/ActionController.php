@@ -448,6 +448,6 @@ class ActionController extends Controller
             } 
             
             return response()->json(['actionDone' => $responseAction,'maths' => $response], 200);
-        }
+    }
 
 }

@@ -30,7 +30,7 @@ class DiaryController extends Controller
 
             $eventInfo = null;
 
-            if (rand(1, 10) <= 3) {
+            if (rand(1, 10) <= 9) {
                 $eventController = new EventController();
                 $eventResult = $eventController->triggerEvent($request);
                 $eventContent = json_decode($eventResult->getContent(), true);
@@ -62,7 +62,7 @@ class DiaryController extends Controller
                 $dayData['event_id'] = $eventContent['id'];
                 $eventInfo = $eventContent;   
             } 
-            
+
             $day = Diary::create($dayData);
             return response()->json(['message' => 'Action successful.', 'event' => $eventInfo], 200);
         }

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('mental');
             $table->integer('iq');
             $table->integer('clean');
+            $table->boolean('alive')->default(true);
             $table->timestamps();
             
         });

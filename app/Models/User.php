@@ -45,6 +45,6 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
     public function pet(){
-        return $this->hasOne(Pet::class);
+        return $this->hasOne(Pet::class)->where('alive',true);
     }
 }
