@@ -111,6 +111,7 @@ class AuthController extends Controller
     // Check if a user with this email already exists
     $existingUser = User::where('email', $user->getEmail())->first();
 
+<<<<<<< Updated upstream
     if ($existingUser) {
         // Log in the existing user
         Auth::login($existingUser);
@@ -123,6 +124,30 @@ class AuthController extends Controller
         ]);
 
         Auth::login($newUser);
+=======
+        // Check if a user with this email already exists
+        $existingUser = User::where('email', $user->getEmail())->first();
+        $newUser = null;
+        
+
+        if ($existingUser) {
+            $user = $existingUser;
+            $token = $existingUser->createToken("API TOKEN")->plainTextToken;
+        } else {
+            // Create a new user
+            $newUser = User::create([
+                'name' => $user->getName(),
+                'email' => $user->getEmail(),
+                'password' => Hash::make(Str::random(24)),
+            ]);
+
+            $user = $newUser;
+            $token = $newUser->createToken("API TOKEN")->plainTextToken;
+        }
+
+
+        return redirect('/home')->with(['api_token' => $token,'user' => $user]);
+>>>>>>> Stashed changes
     }
 
     return redirect('/home'); 
