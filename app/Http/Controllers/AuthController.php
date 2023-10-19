@@ -120,7 +120,7 @@ class AuthController extends Controller
 
         if ($existingUser) {
             // Log in the existing user
-            Auth::login($existingUser);
+
             $token = $existingUser->createToken("API TOKEN")->plainTextToken;
         } else {
             // Create a new user
@@ -130,11 +130,6 @@ class AuthController extends Controller
                 'password' => Hash::make(Str::random(24)),
             ]);
 
-
-            Auth::login($newUser);
-        }
-
-        if ($newUser) {
             $token = $newUser->createToken("API TOKEN")->plainTextToken;
         }
 
