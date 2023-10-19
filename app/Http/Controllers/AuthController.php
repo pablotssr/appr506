@@ -108,23 +108,7 @@ class AuthController extends Controller
     
     $user = Socialite::driver($provider)->user();
 
-    // Check if a user with this email already exists
-    $existingUser = User::where('email', $user->getEmail())->first();
 
-<<<<<<< Updated upstream
-    if ($existingUser) {
-        // Log in the existing user
-        Auth::login($existingUser);
-    } else {
-        // Create a new user
-        $newUser = User::create([
-            'name' => $user->getName(),
-            'email' => $user->getEmail(),
-            'password' => Hash::make(Str::random(24)), 
-        ]);
-
-        Auth::login($newUser);
-=======
         // Check if a user with this email already exists
         $existingUser = User::where('email', $user->getEmail())->first();
         $newUser = null;
@@ -147,9 +131,6 @@ class AuthController extends Controller
 
 
         return redirect('/home')->with(['api_token' => $token,'user' => $user]);
->>>>>>> Stashed changes
-    }
 
-    return redirect('/home'); 
-}
+    }
 }
