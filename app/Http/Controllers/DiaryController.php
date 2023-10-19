@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class DiaryController extends Controller
 {
     //
-    public function actionDone($action){
+    public function actionDone($action, $event_id = null){
         $user = Auth::user();
         $pet = $user->pet;
     
@@ -22,6 +22,7 @@ class DiaryController extends Controller
                 'pet_id' => $pet->id,
                 'pet_age' => $pet->age,
                 'action_id' => $action->id,
+                'event_id' => $event_id,
             ];
             $day = Diary::create($dayData);
     
@@ -36,6 +37,7 @@ class DiaryController extends Controller
                 'pet_id' => $pet->id,
                 'pet_age' => $pet->age,
                 'action_id' => $action->id,
+                'event_id' => $event_id,
             ];
             $day = Diary::create($dayData);
     

@@ -27,6 +27,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::get('/pet', [PetController::class, 'showOrCreate']);
 Route::post('/pet', [PetController::class,'store']);
 Route::post('/pet/kill',[PetController::class,'kill']);
+Route::post('/pet/diary',[PetController::class,'createDiary']);
 
 Route::post('/action/laver', [ActionController::class, 'laver']);
 Route::post('/action/caresser', [ActionController::class, 'caresse']);

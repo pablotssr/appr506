@@ -26,7 +26,7 @@ class ActionController extends Controller
         if (!$laver) {
             return response()->json(['message' => 'not found'], 400);
         }
-
+        $event_id = null;
         $before = $pet->clean;
 
         if ($pet->clean == 100) {
@@ -36,7 +36,7 @@ class ActionController extends Controller
         $pet->clean += $laver->effect;
         $pet->save();
 
-
+        
         if (rand(1, 10) <= 3) {
             $eventController = new EventController();
             $eventResult = $eventController->triggerEvent($request);
@@ -50,6 +50,7 @@ class ActionController extends Controller
                 ],
                 'pet' => $pet,
             ];
+            $event_id = $eventContent['id'];
         } else {
             $responseb = [
                 'message' => 'ptite douche c tt clean la',
@@ -62,7 +63,7 @@ class ActionController extends Controller
         }
 
         $actionDone = new DiaryController();
-        $response = $actionDone->actionDone($laver);
+        $response = $actionDone->actionDone($laver,$event_id);
 
         if ($response->getStatusCode() !== 200) {
             return $response;
@@ -91,7 +92,7 @@ class ActionController extends Controller
         if ($pet->mental == 100) {
             return response()->json(['message' => 'il est déjà o max pas besoin', 'pet' => $pet], 200);
         }
-
+        $event_id = null;
         $pet->mental += $caresse->effect;
         $pet->save();
         if (rand(1, 10) <= 3) {
@@ -107,6 +108,7 @@ class ActionController extends Controller
                 ],
                 'pet' => $pet,
             ];
+            $event_id = $eventContent['id'];
         } else {
             $responseb = [
                 'message' => 'ptite tape sur le front la',
@@ -118,7 +120,7 @@ class ActionController extends Controller
             ];
         }
         $actionDone = new DiaryController();
-        $response = $actionDone->actionDone($caresse);
+        $response = $actionDone->actionDone($caresse, $event_id);
 
         if ($response->getStatusCode() !== 200) {
             return $response;
@@ -136,10 +138,10 @@ class ActionController extends Controller
         if (!$pet) {
             return response()->json(['message' => 'User does not have a pet'], 400);
         }
-
+        $event_id = null;
         $give = Action::where('name', 'give object')->first();
         $actionDone = new DiaryController();
-        $response = $actionDone->actionDone($give);
+        $response = $actionDone->actionDone($give, $event_id);
 
 
         if ($response->getStatusCode() !== 200) {
@@ -180,6 +182,7 @@ class ActionController extends Controller
                     ],
                     'pet' => $pet,
                 ];
+                $event_id = $eventContent['id'];
             } else {
                 $responseb = [
                     'tu a donné' => "{$b->name} à {$pet->name}",
@@ -213,6 +216,7 @@ class ActionController extends Controller
                     ],
                     'pet' => $pet,
                 ];
+                $event_id = $eventContent['id'];
             } else {
                 $responseb = [
                     'tu a donné' => "{$b->name} à {$pet->name}",
@@ -252,6 +256,7 @@ class ActionController extends Controller
                     ],
                     'pet' => $pet,
                 ];
+                $event_id = $eventContent['id'];
             } else {
                 $responseb = [
                     'tu a donné' => "{$b->name} à {$pet->name}",
@@ -291,6 +296,7 @@ class ActionController extends Controller
                     ],
                     'pet' => $pet,
                 ];
+                $event_id = $eventContent['id'];
             } else {
                 $responseb = [
                     'tu a donné' => "{$b->name} à {$pet->name}",
@@ -332,6 +338,7 @@ class ActionController extends Controller
                     ],
                     'pet' => $pet,
                 ];
+                $event_id = $eventContent['id'];
             } else {
                 $responseb = [
                     'tu a donné' => "{$b->name} à {$pet->name}",
@@ -373,6 +380,7 @@ class ActionController extends Controller
                     ],
                     'pet' => $pet,
                 ];
+                $event_id = $eventContent['id'];
             } else {
                 $responseb = [
                     'tu a donné' => "{$b->name} à {$pet->name}",
@@ -402,9 +410,10 @@ class ActionController extends Controller
         if (!$snake) {
             return response()->json(['message' => 'not found'], 400);
         }
+        $event_id = null;
         $before = $pet->mental;
         $actionDone = new DiaryController();
-        $response = $actionDone->actionDone($snake);
+        $response = $actionDone->actionDone($snake,$event_id);
 
         if ($response->getStatusCode() !== 200) {
             return $response;
@@ -431,6 +440,7 @@ class ActionController extends Controller
                     ],
                     'pet' => $pet,
                 ];
+                $event_id = $eventContent['id'];
             } else {
                 $responseb = [
                     'score' => $score,
@@ -469,6 +479,7 @@ class ActionController extends Controller
                     ],
                     'pet' => $pet,
                 ];
+                $event_id = $eventContent['id'];
             } else {
                 $responseb = [
                     'score' => $score,
@@ -501,12 +512,11 @@ class ActionController extends Controller
             return response()->json(['message' => 'not found'], 400);
         }
         $before = $pet->mental;
+        $event_id = null;
         $actionDone = new DiaryController();
-        $response = $actionDone->actionDone($run);
+        $response = $actionDone->actionDone($run,$event_id);
 
-        if ($response->getStatusCode() !== 200) {
-            return $response;
-        }
+        
         if ($score < 10) {
             $pet->mental -= $score;
             $pet->clean -= 10;
@@ -525,6 +535,7 @@ class ActionController extends Controller
                 ],
                 'pet' => $pet
                 ];
+                $event_id = $eventContent['id'];
             } else {
                 $responseb = [
                     'score' => $score,
@@ -557,6 +568,7 @@ class ActionController extends Controller
                 ],
                 'pet' => $pet
                 ];
+                $event_id = $eventContent['id'];
             } else {
                 $responseb = [
                     'score' => $score,
@@ -569,6 +581,9 @@ class ActionController extends Controller
                 ];
             }
             return response()->json($responseb, 200);
+        }
+        if ($response->getStatusCode() !== 200) {
+            return $response;
         }
     }
     public function maths(Request $request)
@@ -585,11 +600,11 @@ class ActionController extends Controller
         if (!$maths) {
             return response()->json(['message' => 'not found'], 400);
         }
-
+        $event_id = null;
         $before = $pet->mental;
         $before2 = $pet->iq;
         $actionDone = new DiaryController();
-        $response = $actionDone->actionDone($maths);
+        $response = $actionDone->actionDone($maths,$event_id);
 
         if ($response->getStatusCode() !== 200) {
             return $response;
@@ -615,6 +630,7 @@ class ActionController extends Controller
                 ],
                 'pet' => $pet
                 ];
+                $event_id = $eventContent['id'];
             } else {
                 $responseb = [
                     'score' => $score,
@@ -651,6 +667,7 @@ class ActionController extends Controller
                 ],
                 'pet' => $pet
                 ];
+                $event_id = $eventContent['id'];
             } else {
                 $responseb = [
                     'score' => $score,
@@ -687,6 +704,7 @@ class ActionController extends Controller
                 ],
                 'pet' => $pet
                 ];
+                $event_id = $eventContent['id'];
             } else {
                 $responseb = [
                     'score' => $score,

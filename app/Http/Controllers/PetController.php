@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pet;
+use App\Models\Event;
+use App\Models\Action;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -50,4 +52,36 @@ class PetController extends Controller
         return response()->json(['message' => 'Pet killed successfully'], 200);
     }
 
+    public function createDiary(Request $request){
+                $user = Auth::user();
+                $pet = $user->pet;
+            
+                $entries = $pet->diary()
+                    ->select('pet_age', 'action_id','event_id')
+                    ->distinct()
+                    ->get();
+            
+                $result = [];
+            
+                foreach ($entries as $entry) {
+                    $age = $entry->pet_age;
+                    $actionId = $entry->action_id;
+                    $eventId = $entry->event_id;
+            
+                    if (!isset($result["jour {$age}"])) {
+                        $result["jour {$age}"] = [];
+                    }
+            
+                    $action = Action::find($actionId); 
+                    $result["jour {$age}"][] = $action->name; 
+
+                    if ($eventId) {
+                        $event = Event::find($eventId); 
+                        $result["jour {$age}"][] = "Event: {$event->name}"; 
+                    }
+                }
+            
+                return response()->json($result, 200);
+            }
+    
 }
