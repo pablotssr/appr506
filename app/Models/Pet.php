@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use App\Models\Diary;
 
 class Pet extends Model
 {
@@ -21,50 +22,61 @@ class Pet extends Model
         'clean',
     ];
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function diary(){
+    public function diary()
+    {
         return $this->hasMany(Diary::class);
     }
-    public function randomColor(){
-        $color = sprintf('#%06X',mt_rand(0, 0xFFFFFF));
+    public function randomColor()
+    {
+        $color = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
         return $color;
     }
 
-    public function randomStats(){
+    public function randomStats()
+    {
         return [
-            'health' => rand(75,100),
-            'mental' => rand(50,100),
-            'iq' => rand(20,150),
-            'clean' => rand(75,100)
+            'health' => rand(75, 100),
+            'mental' => rand(50, 100),
+            'iq' => rand(20, 150),
+            'clean' => rand(75, 100)
         ];
     }
 
-    protected static function boot(){
+    protected static function boot()
+    {
         parent::boot();
-        static::creating(function($pet){
+        static::creating(function ($pet) {
             $pet->color = $pet->randomColor();
             $pet->age = 1;
             $pet->birth = now();
             $stats = $pet->randomStats();
 
-            foreach ($stats as $key => $value){
+            foreach ($stats as $key => $value) {
                 $pet->$key = $value;
             }
         });
 
-        static::updating(function($pet){
+        static::updating(function ($pet) {
             $pet->health = min($pet->health, 100);
             $pet->mental = min($pet->mental, 100);
             $pet->iq = min($pet->iq, 150);
             $pet->clean = min($pet->clean, 100);
 
-            $pet->health = max($pet->health, 0);
-            $pet->mental = max($pet->mental, 0);
-            $pet->iq = max($pet->iq, 0);
-            $pet->clean = max($pet->clean, 0);
+            if ($pet->health == 0 || $pet->mental == 0) {
+    
+                $pet->diary()->where('pet_id', $pet->id)->delete();
+                $pet->delete();
+            } else {
+                $pet->health = max($pet->health, 0);
+                $pet->mental = max($pet->mental, 0);
+                $pet->iq = max($pet->iq, 0);
+                $pet->clean = max($pet->clean, 0);
+            }
         });
     }
 }

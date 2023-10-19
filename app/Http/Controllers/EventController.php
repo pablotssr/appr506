@@ -58,8 +58,9 @@ class EventController extends Controller
             return response()->json(['message' => 'not found'], 400);
         }
 
+        $a = 2;
         $before = $pet->health;
-            if (rand(0, 1) == 0) {
+            if ($a == 2) {
                 $pet->health -= $sdf->effect;
                 $pet->save();
                 return response()->json([
