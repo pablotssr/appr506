@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
+use App\Models\Pet;
 use Laravel\Sanctum\HasApiTokens;
 
 
@@ -147,5 +148,11 @@ class AuthController extends Controller
         return redirect('/social-login');
     }
 
-   
+   public function infos(Request $request){
+    $user = Auth::user();
+    $pet = $user->pet;
+    return response()->json([
+        'user' => $user
+    ], 200);
+   }
 }

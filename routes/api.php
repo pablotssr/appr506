@@ -29,6 +29,8 @@ Route::post('/pet', [PetController::class,'store']);
 Route::post('/pet/kill',[PetController::class,'kill']);
 Route::post('/pet/diary',[PetController::class,'createDiary']);
 
+Route::post('/auth/infos', [AuthController::class, 'infos']);
+
 Route::post('/action/laver', [ActionController::class, 'laver']);
 Route::post('/action/caresser', [ActionController::class, 'caresse']);
 Route::post('/action/snake', [ActionController::class, 'snake']);
