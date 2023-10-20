@@ -30,6 +30,8 @@ class PetController extends Controller
             'name' => $request->input('name'),
         ];
         $pet = $user->pet()->create($petData);
+        $shopController = new ItemController();
+            $newShop = $shopController->createShop($request);
         return $pet;
     }
 
@@ -47,8 +49,7 @@ class PetController extends Controller
         }
 
         $pet->update(['health' => 0]);
-        $pet->delete();
-
+       
         return response()->json(['message' => 'Pet killed successfully'], 200);
     }
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Diary;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\PetController;
 use Illuminate\Support\Facades\Auth;
 
 class DiaryController extends Controller
@@ -30,7 +32,7 @@ class DiaryController extends Controller
 
             $eventInfo = null;
 
-            if (rand(1, 10) <= 9) {
+            if (rand(1, 10) <= 3) {
                 $eventController = new EventController();
                 $eventResult = $eventController->triggerEvent($request);
                 $eventContent = json_decode($eventResult->getContent(), true);
@@ -41,9 +43,11 @@ class DiaryController extends Controller
             $day = Diary::create($dayData);
             return response()->json(['message' => 'Action successful.', 'event' => $eventInfo], 200);
 
-        } elseif ($entriesCount == 2 && !$actionPerformed) {
+        } elseif ($entriesCount == 2) {
             $pet->age += 1;
             $pet->save();
+            $shopController = new ItemController();
+            $newShop = $shopController->createShop($request);
 
             $dayData = [
                 'user_id' => $user->id,
@@ -64,6 +68,8 @@ class DiaryController extends Controller
             } 
 
             $day = Diary::create($dayData);
+            $petController = new PetController();
+            $newDiary = $petController->createDiary($request);
             return response()->json(['message' => 'Action successful.', 'event' => $eventInfo], 200);
         }
         else {

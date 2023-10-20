@@ -150,9 +150,48 @@ class AuthController extends Controller
 
    public function infos(Request $request){
     $user = Auth::user();
-    $pet = $user->pet;
+    $currPet = $user->pet;
+    $pets = $user->allPets;
+    $exPets = $user->deadPets;
+    $sdfEncounters = 0;
+    $cocoEncounters = 0;
+    $sadEncounters = 0;
+    $current = 'pas de pets en ce moment';
+
+    foreach ($pets as $pet) {
+        $sdfEncounters += $pet->diary->where('event_id',1)->count();
+        $cocoEncounters += $pet->diary->where('event_id',4)->count();
+        $sadEncounters += $pet->diary->where('event_id',5)->count();
+    }
+    if($currPet){
+        $current = [
+            'nom' => $currPet->name,
+            'age' => $currPet->age,
+            'couleur' => $currPet->color,
+        ];
+    }
+    $dead = $exPets->where('user_id', $user->id)->count();
+
+    $oldest = $pets->where('user_id', $user->id)->sortBy('age')->last();
+
+
+    $color = $exPets->pluck('color');
+
     return response()->json([
-        'user' => $user
+        'user' => $user->name,
+        'argent' => $user->gold,
+        'pet_actuel' => $current,
+        
+        'nb_de_pet_canés' => $dead,
+        'pet_le_plus_vieux' => [
+            'nom' => $oldest->name,
+            'age' => $oldest->age
+        ],
+        'couleurs' => $color,
+        'vous_avez_rencontré_:_' => "{$sdfEncounters} clodos",
+        'vous_avez_eu_le_covid_:_' => "{$cocoEncounters} fois",
+        'vous_avez_fait_:_' => "{$sadEncounters} clodos"
+
     ], 200);
    }
 }

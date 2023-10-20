@@ -20,11 +20,10 @@ class Pet extends Model
         'mental',
         'iq',
         'clean',
+        'alive'=> 'boolean',
     ];
 
-    protected $casts = [
-        'alive'=> 'boolean',
-        ];
+    
 
     public function user()
     {
