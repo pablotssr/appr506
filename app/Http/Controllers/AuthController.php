@@ -11,6 +11,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use App\Models\Pet;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Http;
 
 
 class AuthController extends Controller
@@ -112,41 +113,37 @@ class AuthController extends Controller
 
     public function handleProviderCallback($provider)
     {
-
         $user = Socialite::driver($provider)->user();
 
         // Check if a user with this email already exists
         $existingUser = User::where('email', $user->getEmail())->first();
         $newUser = null;
-
         if ($existingUser) {
-            // Log in the existing user
-
             $token = $existingUser->createToken("API TOKEN")->plainTextToken;
+
+            // dd($existingUser->toArray());
+            
+            return $user->getEmail();
+        
         } else {
             // Create a new user
             $newUser = User::create([
                 'name' => $user->getName(),
                 'email' => $user->getEmail(),
                 'password' => Hash::make(Str::random(24)),
-            ]);
+            ]); 
+            // dd($newUser->toArray());
 
             $token = $newUser->createToken("API TOKEN")->plainTextToken;
+            return $newUser;
+        
         }
 
-        return redirect('/home')->with(['api_token' => $token]);
+        
+
     }
 
-    public function logout(Request $request)
-    {
-        $user = $request->user();
 
-        if ($user && $user->currentAccessToken() !== null) {
-            $user->currentAccessToken()->delete();
-        }
-
-        return redirect('/social-login');
-    }
 
    public function infos(Request $request){
     $user = Auth::user();
@@ -169,6 +166,8 @@ class AuthController extends Controller
             'age' => $currPet->age,
             'couleur' => $currPet->color,
         ];
+    } else {
+        $current =['pet' => 'ti en a pas le sang'];
     }
     $dead = $exPets->where('user_id', $user->id)->count();
 

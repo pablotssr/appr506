@@ -14,7 +14,7 @@ use App\Http\Controllers\PetController;
 |
 */
 
-Route::get('/', function () {
+Route::get('/home', function () {
     return view('welcome');
 });
 
@@ -41,9 +41,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/pets', [PetController::class, 'store'])->name('pets.store');
 });
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-
+// Route::get('/logout', [AuthController::class, 'logout']);
 Route::get('login/{provider}', [AuthController::class, 'redirectToProvider']);
 Route::get('login/{provider}/callback', [AuthController::class, 'handleProviderCallback']);
 
