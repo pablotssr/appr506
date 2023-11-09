@@ -123,8 +123,11 @@ class AuthController extends Controller
 
             // dd($existingUser->toArray());
             
-            return $user->getEmail();
-        
+        //  return response()->json(['apiToken' => $token, 'user_info' => $existingUser], 200);
+            // return redirect('http://localhost:4200');
+             return redirect('http://localhost:4200?apiToken=' . $token);
+
+            
         } else {
             // Create a new user
             $newUser = User::create([
@@ -135,8 +138,9 @@ class AuthController extends Controller
             // dd($newUser->toArray());
 
             $token = $newUser->createToken("API TOKEN")->plainTextToken;
-            return $newUser;
-        
+         return response()->json(['apiToken' => $token, 'user_info' => $newUser], 200);
+            // return redirect('http://localhost:4200?api_token=' . $token);
+
         }
 
         
