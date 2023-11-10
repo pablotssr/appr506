@@ -123,9 +123,9 @@ class AuthController extends Controller
 
             // dd($existingUser->toArray());
             
-        //  return response()->json(['apiToken' => $token, 'user_info' => $existingUser], 200);
+            // return response()->json(['apiToken' => $token, 'user_info' => $existingUser], 200);
             // return redirect('http://localhost:4200');
-             return redirect('http://localhost:4200?apiToken=' . $token);
+            return redirect('http://localhost:4200?apiToken=' . $token.'&user='.$existingUser);
 
             
         } else {
@@ -138,8 +138,9 @@ class AuthController extends Controller
             // dd($newUser->toArray());
 
             $token = $newUser->createToken("API TOKEN")->plainTextToken;
-         return response()->json(['apiToken' => $token, 'user_info' => $newUser], 200);
+            // return response()->json(['apiToken' => $token, 'user_info' => $newUser], 200);
             // return redirect('http://localhost:4200?api_token=' . $token);
+            return redirect('http://localhost:4200?apiToken=' . $token.'&user='.$newUser);
 
         }
 
