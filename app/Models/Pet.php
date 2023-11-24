@@ -36,8 +36,7 @@ class Pet extends Model
     }
     public function randomColor()
     {
-        $color = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
-        return $color;
+        return mt_rand(1, 10);
     }
 
     public function randomStats()

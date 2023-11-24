@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->deleteOnCascade();
             $table->string('name',20);
-            $table->string('color');
+            $table->integer('color');
             $table->integer('age')->default(1);
             $table->date('birth');
             $table->integer('health');
