@@ -29,12 +29,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/pet', [PetController::class, 'showOrCreate']);
     Route::post('/pet', [PetController::class,'store']);
     Route::post('/pet/kill',[PetController::class,'kill']);
-    Route::post('/pet/diary',[PetController::class,'createDiary']);
+    Route::get('/pet/diary',[PetController::class,'createDiary']);
 
     Route::get('/auth/infos', [AuthController::class, 'infos']);
 
-    Route::post('/action/laver', [ActionController::class, 'laver']);
-    Route::post('/action/caresser', [ActionController::class, 'caresse']);
+    Route::get('/action/laver', [ActionController::class, 'laver']);
+    Route::get('/action/caresser', [ActionController::class, 'caresse']);
     Route::post('/action/snake', [ActionController::class, 'snake']);
     Route::post('/action/run', [ActionController::class, 'run']);
     Route::post('/action/maths', [ActionController::class, 'maths']);
@@ -50,9 +50,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('/event/trigger', [EventController::class, 'triggerEvent']);
 
-    Route::post('/item/shop', [ItemController::class, 'createShop']);
-    Route::post('/item/shop/see', [ItemController::class, 'viewShop']);
-    Route::post('/item/inventory/see', [ItemController::class, 'viewInventory']);
+    Route::get('/item/shop', [ItemController::class, 'createShop']);
+    Route::get('/item/shop/see', [ItemController::class, 'viewShop']);
+    Route::get('/item/inventory/see', [ItemController::class, 'viewInventory']);
     Route::post('/item/buy', [ItemController::class, 'achat']);
 });
 

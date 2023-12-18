@@ -102,6 +102,7 @@ class ActionController extends Controller
     {
         $user = Auth::user();
         $pet = $user->pet;
+        $inventory = Inventory::where('user_id', $user->id)->get();
 
         if (!$pet) {
             return response()->json(['message' => 'User does not have a pet'], 400);
@@ -121,7 +122,7 @@ class ActionController extends Controller
             return $responseAction;
         }
         
-        $donner = $request->input('give');
+        $donner = $request->input('item_Id');
         $item = Inventory::find($donner);
 
         if (!$item) {
@@ -156,7 +157,8 @@ class ActionController extends Controller
             $pet->mental -= $b->effect;
             $pet->save();
             $item->delete();
-            $responseb = [
+
+            $response = [
                     'tu_a_donné' => "{$b->name} à {$pet->name}",
                     'changes' => [
                         'Mental_avant' => $before,
@@ -176,6 +178,7 @@ class ActionController extends Controller
             $pet->health += ($b->effect) / 3;
             $pet->save();
             $item->delete();
+
             $response = [
                     'tu_a_donné' => "{$b->name} à {$pet->name}",
                     'changes' => [
@@ -194,6 +197,7 @@ class ActionController extends Controller
             $pet->health -= ($b->effect) / 2;
             $pet->save();
             $item->delete();
+
             $response = [
                     'tu_a_donné' => "{$b->name} à {$pet->name}",
                     'changes' => [
@@ -216,6 +220,7 @@ class ActionController extends Controller
             $pet->health += $b->effect;
             $pet->save();
             $item->delete();
+
             $response = [
                     'tu_a_donné' => "{$b->name} à {$pet->name}",
                     'changes' => [
@@ -238,6 +243,7 @@ class ActionController extends Controller
             $pet->health += $b->effect;
             $pet->save();
             $item->delete();
+
 
             $response = [
                     'tu_a_donné' => "{$b->name} à {$pet->name}",
@@ -267,7 +273,7 @@ class ActionController extends Controller
             return response()->json(['message' => 'not found'], 400);
         }
 
-        $score = rand(0, 40);
+        $score = $request->input('score');
         $before = $pet->mental;
         $event_id = null;
 
@@ -333,7 +339,7 @@ class ActionController extends Controller
             return response()->json(['message' => 'not found'], 400);
         }
 
-        $score = rand(0, 40);
+        $score = $request->input('score');
         $before = $pet->mental;
         $event_id = null;
 
@@ -344,8 +350,10 @@ class ActionController extends Controller
             return $responseAction;
         }
 
-        if ($score < 10) {
+        if ($score < 16) {
             $pet->mental -= $score;
+            $user->gold += $score;
+            $user->save();
             $pet->clean -= 10;
             $pet->save();
             
@@ -362,6 +370,8 @@ class ActionController extends Controller
                 $pet->mental += $score;
                 $pet->clean -= 15;
                 $pet->save();
+                $user->gold += $score;
+                $user->save();
                 $response = [
                     'Score' => $score,
                     'Message' => 'gg',
@@ -388,10 +398,10 @@ class ActionController extends Controller
             return response()->json(['message' => 'not found'], 400);
         }
         
-        $score = rand(0, 10);
         $event_id = null;
         $before = $pet->mental;
         $before2 = $pet->iq;
+        $score = $request->input('score');
 
         $actionDone = new DiaryController();
         $responseAction = $actionDone->actionDone($maths, $event_id,$request);
@@ -404,6 +414,8 @@ class ActionController extends Controller
             $pet->mental -= 10;
             $pet->iq -= 15;
             $pet->save();
+            $user->gold += $score;
+            $user->save();
             $response = [
                     'Score' => $score,
                     'Message' => 'eh beh',
@@ -419,6 +431,8 @@ class ActionController extends Controller
             $pet->mental += $score;
             $pet->iq += $score * 2;
             $pet->save();
+            $user->gold += $score * 2;
+            $user->save();
             $response = [
                     'score' => $score,
                     'message' => 'ok',
@@ -434,6 +448,8 @@ class ActionController extends Controller
             $pet->mental += 15;
             $pet->iq += $score * 2;
             $pet->save();
+            $user->gold += $score * 2;
+            $user->save();
             $response = [
                     'Score' => $score,
                     'Message' => 'gg',

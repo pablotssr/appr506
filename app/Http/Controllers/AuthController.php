@@ -186,15 +186,15 @@ class AuthController extends Controller
         'argent' => $user->gold,
         'pet_actuel' => $current,
         
-        'nb_de_pet_canés' => $dead,
+        'nb_de_pet_morts' => $dead,
         'pet_le_plus_vieux' => [
             'nom' => $oldest->name,
             'age' => $oldest->age
         ],
         'couleurs' => $color,
-        'vous_avez_rencontré_:_' => "{$sdfEncounters} clodos",
-        'vous_avez_eu_le_covid_:_' => "{$cocoEncounters} fois",
-        'vous_avez_fait_:_' => "{$sadEncounters} clodos"
+        'vous_avez_rencontre' => "{$sdfEncounters}",
+        'vous_avez_eu_le_covid' => "{$cocoEncounters}",
+        'vous_avez_fait' => "{$sadEncounters}"
 
     ], 200);
    }

@@ -49,7 +49,7 @@ class ItemController extends Controller
 
     public function achat(Request $request){
         $user = Auth::user();
-        $buy = $request->input('acheter'); 
+        $buy = $request->input('item'); 
 
         $column = "item{$buy}";
 
@@ -104,22 +104,22 @@ class ItemController extends Controller
     
         if ($item1) {
             $response += [
-                'Item 1' => $item1->name,
-                'prix item 1' => $item1->price,
+                'Item1' => $item1->name,
+                'Price1' => $item1->price,
             ];
         }
     
         if ($item2) {
             $response += [
-                'Item 2' => $item2->name,
-                'prix item 2' => $item2->price,
+                'Item2' => $item2->name,
+                'Price2' => $item2->price,
             ];
         }
     
         if ($item3) {
             $response += [
-                'Item 3' => $item3->name,
-                'prix item 3' => $item3->price,
+                'Item3' => $item3->name,
+                'Price3' => $item3->price,
             ];
         }
     
