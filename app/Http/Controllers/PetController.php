@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pet;
 use App\Models\Event;
 use App\Models\Action;
+use App\Http\Controllers\EventController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -84,7 +85,8 @@ class PetController extends Controller
 
                     if ($eventId) {
                         $event = Event::find($eventId); 
-                        $result["jour {$age}"][] = "{$event->name}"; 
+                        
+                        $result["jour {$age}"][] = ['name'=>$event->name,'desc'=>$event->eventDesc]; 
                     }
                 }
             

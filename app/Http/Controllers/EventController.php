@@ -50,14 +50,14 @@ class EventController extends Controller
             return response()->json(['message' => 'User does not have a pet'], 400);
         }
 
-        $sdf = Event::where('name', 'sdfEncounter')->first();
-        if (!$sdf) {
-            return response()->json(['message' => 'not found'], 400);
-        }
 
         $a = rand(1, 2);
         $before = $pet->health;
             if ($a == 2) {
+                $sdf = Event::where('name', 'sdfEncounter1')->first();
+        if (!$sdf) {
+            return response()->json(['message' => 'not found'], 400);
+        }
                 $pet->health -= $sdf->effect;
                 $pet->save();
                 return response()->json([
@@ -71,6 +71,10 @@ class EventController extends Controller
                     'pet' => $pet
                 ], 200);
             } else  {
+                $sdf = Event::where('name', 'sdfEncounter2')->first();
+        if (!$sdf) {
+            return response()->json(['message' => 'not found'], 400);
+        }
                 $pet->mental += ($sdf->effect) / 2;
                 $pet->save();
                 return response()->json([
@@ -95,14 +99,15 @@ class EventController extends Controller
             return response()->json(['message' => 'User does not have a pet'], 400);
         }
 
-        $love = Event::where('name', 'crushEncounter')->first();
-        if (!$love) {
-            return response()->json(['message' => 'not found'], 400);
-        }
+        
 
         $before = $pet->mental;
 
             if (rand(0, 1) == 0) {
+                $love = Event::where('name', 'crushEncounter1')->first();
+        if (!$love) {
+            return response()->json(['message' => 'not found'], 400);
+        }
                 $pet->mental -= $love->effect;
                 $pet->save();
                 return response()->json([
@@ -116,6 +121,10 @@ class EventController extends Controller
                     'pet' => $pet
                 ], 200);
             } else  {
+                $love = Event::where('name', 'crushEncounter2')->first();
+        if (!$love) {
+            return response()->json(['message' => 'not found'], 400);
+        }
                 $pet->mental += $love->effect;
                 $pet->save();
                 return response()->json([
@@ -198,15 +207,16 @@ class EventController extends Controller
             return response()->json(['message' => 'User does not have a pet'], 400);
         }
 
-        $sad = Event::where('name', 'depression')->first();
-        if (!$sad) {
-            return response()->json(['message' => 'not found'], 400);
-        }
+        
 
         $before = $pet->health;
         $before2 = $pet->mental;
         
         if (rand(0, 1) == 0) {
+            $sad = Event::where('name', 'depression1')->first();
+        if (!$sad) {
+            return response()->json(['message' => 'not found'], 400);
+        }
                 $pet->mental -= $sad->effect;
                 $pet->health -= ($sad->effect)/2;
                 $pet->save();
@@ -223,6 +233,10 @@ class EventController extends Controller
                     'pet' => $pet
                 ], 200);
             } else  {
+                $sad = Event::where('name', 'depression2')->first();
+        if (!$sad) {
+            return response()->json(['message' => 'not found'], 400);
+        }
                 $pet->mental -= ($sad->effect)/2;
                 $pet->health -= ($sad->effect)/4;
                 $pet->save();
@@ -310,4 +324,6 @@ class EventController extends Controller
                     'pet' => $pet
                 ], 200);
     }
+
+    
 }
