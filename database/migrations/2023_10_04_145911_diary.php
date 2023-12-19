@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignIdFor(Pet::class)->constrained()->deleteOnCascade();
             $table->integer('pet_age')->nullable();
             $table->foreignIdFor(Action::class)->deleteOnCascade();
+            $table->string('action_score')->nullable();
             $table->foreignIdFor(Event::class)->nullable()->deleteOnCascade();
             $table->timestamps();
 

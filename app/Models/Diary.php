@@ -13,6 +13,7 @@ class Diary extends Model
         'pet_id',
         'pet_age',
         'action_id',
+        'action_score',
         'event_id',
     ];
     public function pet(){

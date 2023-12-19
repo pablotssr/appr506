@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name',20);
             $table->integer('effect')->nullable();
             $table->integer('score')->nullable();
+            $table->string('diaryDesc');
             $table->timestamps();
             
         });

@@ -32,9 +32,9 @@ class ActionController extends Controller
         if ($pet->clean == 100) {
             return response()->json(['message' => 'il est déjà hyper clean pas besoin', 'pet' => $pet], 200);
         }
-
+        $score = 0;
         $actionDone = new DiaryController();
-        $responseAction = $actionDone->actionDone($laver, $event_id, $request);
+        $responseAction = $actionDone->actionDone($laver, $event_id,$score, $request);
 
         if ($responseAction->getStatusCode() !== 200) {
             return $responseAction; 
@@ -74,9 +74,9 @@ class ActionController extends Controller
         if ($pet->mental == 100) {
             return response()->json(['message' => 'il est déjà o max pas besoin', 'pet' => $pet], 200);
         }
-
+        $score=0;
         $actionDone = new DiaryController();
-        $responseAction = $actionDone->actionDone($caresse, $event_id, $request);
+        $responseAction = $actionDone->actionDone($caresse, $event_id, $score,$request);
 
         if ($responseAction->getStatusCode() !== 200) {
             return $responseAction; 
@@ -114,9 +114,9 @@ class ActionController extends Controller
         }
         
         $event_id = null;
-
+        $score = 0;
         $actionDone = new DiaryController();
-        $responseAction = $actionDone->actionDone($give, $event_id,$request);
+        $responseAction = $actionDone->actionDone($give, $event_id,$score,$request);
 
         if ($responseAction->getStatusCode() !== 200) {
             return $responseAction;
@@ -273,12 +273,12 @@ class ActionController extends Controller
             return response()->json(['message' => 'not found'], 400);
         }
 
-        $score = $request->input('score');
+        $score = $request->input('score') + 1;
         $before = $pet->mental;
         $event_id = null;
 
         $actionDone = new DiaryController();
-        $responseAction = $actionDone->actionDone($snake, $event_id,$request);
+        $responseAction = $actionDone->actionDone($snake, $event_id,$score,$request);
 
         if ($responseAction->getStatusCode() !== 200) {
             return $responseAction;
@@ -339,12 +339,12 @@ class ActionController extends Controller
             return response()->json(['message' => 'not found'], 400);
         }
 
-        $score = $request->input('score');
+        $score = $request->input('score') + 1;
         $before = $pet->mental;
         $event_id = null;
 
         $actionDone = new DiaryController();
-        $responseAction = $actionDone->actionDone($run, $event_id,$request);
+        $responseAction = $actionDone->actionDone($run, $event_id,$score,$request);
 
         if ($responseAction->getStatusCode() !== 200) {
             return $responseAction;
@@ -401,10 +401,10 @@ class ActionController extends Controller
         $event_id = null;
         $before = $pet->mental;
         $before2 = $pet->iq;
-        $score = $request->input('score');
+        $score = $request->input('score') + 1;
 
         $actionDone = new DiaryController();
-        $responseAction = $actionDone->actionDone($maths, $event_id,$request);
+        $responseAction = $actionDone->actionDone($maths, $event_id,$score,$request);
 
         if ($responseAction->getStatusCode() !== 200) {
             return $responseAction;

@@ -58,7 +58,7 @@ class PetController extends Controller
                 $pet = $user->pet;
             
                 $entries = $pet->diary()
-                    ->select('pet_age', 'action_id','event_id')
+                    ->select('pet_age', 'action_id','event_id','action_score')
                     ->distinct()
                     ->get();
             
@@ -68,17 +68,23 @@ class PetController extends Controller
                     $age = $entry->pet_age;
                     $actionId = $entry->action_id;
                     $eventId = $entry->event_id;
+                    $sc = $entry->action_score;
             
                     if (!isset($result["jour {$age}"])) {
                         $result["jour {$age}"] = [];
                     }
             
                     $action = Action::find($actionId); 
-                    $result["jour {$age}"][] = $action->name; 
+                    $actionData = [
+                        'description' => $action->diaryDesc,
+                        'score' => $sc
+                    ];
+                
+                    $result["jour {$age}"][] = $actionData; 
 
                     if ($eventId) {
                         $event = Event::find($eventId); 
-                        $result["jour {$age}"][] = "Event: {$event->name}"; 
+                        $result["jour {$age}"][] = "{$event->name}"; 
                     }
                 }
             
