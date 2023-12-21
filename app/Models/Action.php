@@ -13,6 +13,7 @@ class Action extends Model
         'name',
         'effect',
         'score',
+        'diaryDesc'
     ];
 
     

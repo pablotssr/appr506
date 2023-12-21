@@ -16,13 +16,14 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->deleteOnCascade();
             $table->string('name',20);
-            $table->string('color');
+            $table->integer('color');
             $table->integer('age')->default(1);
             $table->date('birth');
             $table->integer('health');
             $table->integer('mental');
             $table->integer('iq');
             $table->integer('clean');
+            $table->boolean('alive')->default(true);
             $table->timestamps();
             
         });

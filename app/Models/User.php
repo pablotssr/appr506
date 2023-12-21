@@ -45,6 +45,14 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
     public function pet(){
-        return $this->hasOne(Pet::class);
+        return $this->hasOne(Pet::class)->where('alive',true);
+    }
+
+    public function deadPets(){
+        return $this->hasMany(Pet::class)->where('alive',false);
+    }
+
+    public function allPets(){
+        return $this->hasMany(Pet::class);
     }
 }

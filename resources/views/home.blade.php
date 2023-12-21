@@ -10,4 +10,9 @@
     <a href="{{ url('/pets') }}">Go to Pets</a>
 
 </body>
+<script>
+    const api_token = "{{ session('api_token') }}";
+
+    console.log(api_token);
+</script>
 </html>
