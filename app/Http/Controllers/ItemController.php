@@ -107,6 +107,11 @@ class ItemController extends Controller
                 'Item1' => $item1->name,
                 'Price1' => $item1->price,
             ];
+        } else {
+            $response += [
+                'Item1' => '',
+                'Price1' => 'X',
+            ];
         }
     
         if ($item2) {
@@ -114,12 +119,22 @@ class ItemController extends Controller
                 'Item2' => $item2->name,
                 'Price2' => $item2->price,
             ];
+        } else {
+            $response += [
+                'Item2' => '',
+                'Price2' => 'X',
+            ];
         }
     
         if ($item3) {
             $response += [
                 'Item3' => $item3->name,
                 'Price3' => $item3->price,
+            ];
+        }else {
+            $response += [
+                'Item3' => '',
+                'Price3' => 'X',
             ];
         }
     

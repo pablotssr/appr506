@@ -78,7 +78,7 @@ class EventController extends Controller
                 $pet->mental += ($sdf->effect) / 2;
                 $pet->save();
                 return response()->json([
-                    'id' => "1",
+                    'id' => "2",
                     'event name' => 'sdf encounter',
                     'message' => 'tu la fumé respect',
                     'changes' => [
@@ -111,7 +111,7 @@ class EventController extends Controller
                 $pet->mental -= $love->effect;
                 $pet->save();
                 return response()->json([
-                    'id' => "2",
+                    'id' => "3",
                     'event name' => 'crush encounter',
                     'message' => 'dommage big flop',
                     'changes' => [
@@ -128,7 +128,7 @@ class EventController extends Controller
                 $pet->mental += $love->effect;
                 $pet->save();
                 return response()->json([
-                    'id' => "2",
+                    'id' => "4",
                     'event name' => 'crush encounter',
                     'message' => "gg elle t'a adressé la parole",
                     'changes' => [
@@ -158,7 +158,7 @@ class EventController extends Controller
         $pet->clean -= $pigeon->effect;
         $pet->save();
         return response()->json([
-            'id' => "3",
+            'id' => "5",
             'event_name' => 'pigeon encounter',
             'message' => 'un pigeon est passé au dessus',
                     'changes' => [
@@ -187,7 +187,7 @@ class EventController extends Controller
         $pet->health -= $coco->effect;
         $pet->save();
                 return response()->json([
-                    'id' => "4",
+                    'id' => "6",
                     'event name' => 'lecher la barre du metro',
                     'message' => 'connard de virus',
                     'changes' => [
@@ -221,7 +221,7 @@ class EventController extends Controller
                 $pet->health -= ($sad->effect)/2;
                 $pet->save();
                 return response()->json([
-                    'id' => "5",
+                    'id' => "7",
                     'event name' => 'ptite depression ?',
                     'message' => 'coup dur grande depression nerveuse',
                     'changes' => [
@@ -241,7 +241,7 @@ class EventController extends Controller
                 $pet->health -= ($sad->effect)/4;
                 $pet->save();
                 return response()->json([
-                    'id' => "5",
+                    'id' => "8",
                     'event name' => 'ptite depression ?',
                     'message' => 'oui oui ça va aller',
                     'changes' => [
@@ -272,7 +272,7 @@ class EventController extends Controller
         $user->gold += $riche->effect;
         $user->save();
         return response()->json([
-            'id' => "6",
+            'id' => "9",
             'event name' => 'c la deche?',
             'message' => 'le vilain billet qui traine par terre',
             'changes' => [
@@ -308,7 +308,7 @@ class EventController extends Controller
 
         $pet->save();
         return response()->json([
-            'id' => "7",
+            'id' => "10",
             'event name' => 'grand respect',
                     'message' => 'masterclass tu es la meilleure version de toi même',
                     'changes' => [
