@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DiaryController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\ActionController;
 use App\Http\Controllers\ItemController;
@@ -32,7 +33,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/pet/diary',[PetController::class,'createDiary']);
 
     Route::get('/auth/infos', [AuthController::class, 'infos']);
-
+    Route::get('/action/done', [DiaryController::class, 'dailyAction']);
     Route::get('/action/laver', [ActionController::class, 'laver']);
     Route::get('/action/caresser', [ActionController::class, 'caresse']);
     Route::post('/action/snake', [ActionController::class, 'snake']);

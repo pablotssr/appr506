@@ -79,4 +79,18 @@ class DiaryController extends Controller
         }
 
     }
+
+    public function dailyAction()
+{
+    $user = Auth::user();
+    $pet = $user->pet;
+
+    // Récupérer les actions effectuées pour l'âge actuel du pet
+    $actionsPerformed = $pet->diary()
+        ->where('pet_age', $pet->age)
+        ->pluck('action_id')
+        ->toArray();
+
+    return response()->json(['actionsPerformed' => $actionsPerformed], 200);
+}
 }
