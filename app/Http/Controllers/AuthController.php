@@ -23,7 +23,6 @@ class AuthController extends Controller
     public function createUser(Request $request)
     {
         try {
-            //Validated
             $validateUser = Validator::make(
                 $request->all(),
                 [
@@ -115,87 +114,81 @@ class AuthController extends Controller
     {
         $user = Socialite::driver($provider)->user();
 
-        // Check if a user with this email already exists
         $existingUser = User::where('email', $user->getEmail())->first();
         $newUser = null;
         if ($existingUser) {
             $token = $existingUser->createToken("API TOKEN")->plainTextToken;
-
-            // dd($existingUser->toArray());
-            
-            // return response()->json(['apiToken' => $token, 'user_info' => $existingUser], 200);
-            // return redirect('http://localhost:4200');
-            return redirect('http://localhost:4200?apiToken=' . $token.'&user='.$existingUser);
-
-            
+            return redirect('http://localhost:4200?apiToken=' . $token . '&user=' . $existingUser);
         } else {
-            // Create a new user
             $newUser = User::create([
                 'name' => $user->getName(),
                 'email' => $user->getEmail(),
                 'password' => Hash::make(Str::random(24)),
-            ]); 
-            // dd($newUser->toArray());
-
+            ]);
             $token = $newUser->createToken("API TOKEN")->plainTextToken;
-            // return response()->json(['apiToken' => $token, 'user_info' => $newUser], 200);
-            // return redirect('http://localhost:4200?api_token=' . $token);
-            return redirect('http://localhost:4200?apiToken=' . $token.'&user='.$newUser);
+            return redirect('http://localhost:4200?apiToken=' . $token . '&user=' . $newUser);
+        }
+    }
+
+    public function infos(Request $request)
+    {
+        $user = Auth::user();
+        $currPet = $user->pet;
+        $pets = $user->allPets;
+        $exPets = $user->deadPets;
+        $sdfEncounters = 0;
+        $sdfWin = 0;
+        $sdfLoss = 0;
+
+        $cocoEncounters = 0;
+        $sadEncounters = 0;
+
+        $current = 'pas de pets en ce moment';
+
+        foreach ($pets as $pet) {
+            $sdfEncounters += $pet->diary->whereIn('event_id', [1, 2])->count();
+            $sdfWin += $pet->diary->where('event_id', 2)->count();
+            $sdfLoss += $pet->diary->where('event_id', 1)->count();
+
+
+            $cocoEncounters += $pet->diary->where('event_id', 6)->count();
+            $sadEncounters += $pet->diary->whereIn('event_id', [7, 8])->count();
 
         }
+        if ($currPet) {
+            $current = [
+                'nom' => $currPet->name,
+                'age' => $currPet->age,
+                'couleur' => $currPet->color,
+            ];
+        } else {
+            $current = ['pet' => 'ti en a pas le sang'];
+        }
+        $dead = $exPets->where('user_id', $user->id)->count();
 
-        
+        $oldest = $pets->where('user_id', $user->id)->sortBy('age')->last();
 
+
+        $color = $exPets->pluck('color');
+
+        return response()->json([
+            'user' => $user->name,
+            'id' => $user->id,
+            'argent' => $user->gold,
+            'pet_actuel' => $current,
+
+            'nb_de_pet_morts' => $dead,
+            'pet_le_plus_vieux' => [
+                'nom' => $oldest->name,
+                'age' => $oldest->age
+            ],
+            'couleurs' => $color,
+            'vous_avez_rencontre' => "{$sdfEncounters}",
+            'victoires' => "{$sdfWin}",
+            'defaites' => "{$sdfLoss}",
+            'vous_avez_eu_le_covid' => "{$cocoEncounters}",
+            'vous_avez_fait' => "{$sadEncounters}"
+
+        ], 200);
     }
-
-
-
-   public function infos(Request $request){
-    $user = Auth::user();
-    $currPet = $user->pet;
-    $pets = $user->allPets;
-    $exPets = $user->deadPets;
-    $sdfEncounters = 0;
-    $cocoEncounters = 0;
-    $sadEncounters = 0;
-    $current = 'pas de pets en ce moment';
-
-    foreach ($pets as $pet) {
-        $sdfEncounters += $pet->diary->where('event_id',1)->count();
-        $cocoEncounters += $pet->diary->where('event_id',4)->count();
-        $sadEncounters += $pet->diary->where('event_id',5)->count();
-    }
-    if($currPet){
-        $current = [
-            'nom' => $currPet->name,
-            'age' => $currPet->age,
-            'couleur' => $currPet->color,
-        ];
-    } else {
-        $current =['pet' => 'ti en a pas le sang'];
-    }
-    $dead = $exPets->where('user_id', $user->id)->count();
-
-    $oldest = $pets->where('user_id', $user->id)->sortBy('age')->last();
-
-
-    $color = $exPets->pluck('color');
-
-    return response()->json([
-        'user' => $user->name,
-        'argent' => $user->gold,
-        'pet_actuel' => $current,
-        
-        'nb_de_pet_morts' => $dead,
-        'pet_le_plus_vieux' => [
-            'nom' => $oldest->name,
-            'age' => $oldest->age
-        ],
-        'couleurs' => $color,
-        'vous_avez_rencontre' => "{$sdfEncounters}",
-        'vous_avez_eu_le_covid' => "{$cocoEncounters}",
-        'vous_avez_fait' => "{$sadEncounters}"
-
-    ], 200);
-   }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -23,6 +22,7 @@ class EventController extends Controller
 
         $selectedEvent = $this->selectEvent($eventProbabilities);
 
+    
         return $this->$selectedEvent($pet);
     }
 
@@ -62,7 +62,7 @@ class EventController extends Controller
                 $pet->save();
                 return response()->json([
                     'id' => "1",
-                    'event name' => 'sdf encounter',
+                    'event_name' => "sdf t'a planté",
                     'message' => 'dommage il ta planté',
                     'changes' => [
                         'Santé avant' => $before,
@@ -79,7 +79,7 @@ class EventController extends Controller
                 $pet->save();
                 return response()->json([
                     'id' => "2",
-                    'event name' => 'sdf encounter',
+                    'event_name' => "tu as tabassé sdf",
                     'message' => 'tu la fumé respect',
                     'changes' => [
                         'Mental avant' => $before,
@@ -100,10 +100,10 @@ class EventController extends Controller
         }
 
         
-
+        $a = rand(1, 2);
         $before = $pet->mental;
 
-            if (rand(0, 1) == 0) {
+            if ($a == 1) {
                 $love = Event::where('name', 'crushEncounter1')->first();
         if (!$love) {
             return response()->json(['message' => 'not found'], 400);
@@ -112,7 +112,7 @@ class EventController extends Controller
                 $pet->save();
                 return response()->json([
                     'id' => "3",
-                    'event name' => 'crush encounter',
+                    'event_name' => "tu t'es fais recal",
                     'message' => 'dommage big flop',
                     'changes' => [
                         'Mental avant' => $before,
@@ -121,7 +121,7 @@ class EventController extends Controller
                     'pet' => $pet
                 ], 200);
             } else  {
-                $love = Event::where('name', 'crushEncounter2')->first();
+                $love = Event::where('name', 'crushEncounter')->first();
         if (!$love) {
             return response()->json(['message' => 'not found'], 400);
         }
@@ -129,7 +129,7 @@ class EventController extends Controller
                 $pet->save();
                 return response()->json([
                     'id' => "4",
-                    'event name' => 'crush encounter',
+                    'event_name' => "tu es en couple mtn",
                     'message' => "gg elle t'a adressé la parole",
                     'changes' => [
                         'Mental avant' => $before,
@@ -159,7 +159,7 @@ class EventController extends Controller
         $pet->save();
         return response()->json([
             'id' => "5",
-            'event_name' => 'pigeon encounter',
+            'event_name' => "un pigeon t'a fienté dessus ",
             'message' => 'un pigeon est passé au dessus',
                     'changes' => [
                         'Propreté avant' => $before,
@@ -188,7 +188,7 @@ class EventController extends Controller
         $pet->save();
                 return response()->json([
                     'id' => "6",
-                    'event name' => 'lecher la barre du metro',
+                    'event_name' => 'tu as le covid mdr',
                     'message' => 'connard de virus',
                     'changes' => [
                         'Santé avant' => $before,
@@ -211,8 +211,8 @@ class EventController extends Controller
 
         $before = $pet->health;
         $before2 = $pet->mental;
-        
-        if (rand(0, 1) == 0) {
+        $a = rand(1,2);
+        if ($a == 1) {
             $sad = Event::where('name', 'depression1')->first();
         if (!$sad) {
             return response()->json(['message' => 'not found'], 400);
@@ -222,7 +222,7 @@ class EventController extends Controller
                 $pet->save();
                 return response()->json([
                     'id' => "7",
-                    'event name' => 'ptite depression ?',
+                    'event_name' => "méga depression force a toi",
                     'message' => 'coup dur grande depression nerveuse',
                     'changes' => [
                         'Mental avant' => $before2,
@@ -242,7 +242,7 @@ class EventController extends Controller
                 $pet->save();
                 return response()->json([
                     'id' => "8",
-                    'event name' => 'ptite depression ?',
+                    'event_name' => "dépression de prouveur",
                     'message' => 'oui oui ça va aller',
                     'changes' => [
                         'Mental avant' => $before2,
@@ -273,7 +273,7 @@ class EventController extends Controller
         $user->save();
         return response()->json([
             'id' => "9",
-            'event name' => 'c la deche?',
+            'event_name' => "argent au sol",
             'message' => 'le vilain billet qui traine par terre',
             'changes' => [
                 'Argent avant' => $before,
@@ -309,7 +309,7 @@ class EventController extends Controller
         $pet->save();
         return response()->json([
             'id' => "10",
-            'event name' => 'grand respect',
+            'event_name' => 'grand respect',
                     'message' => 'masterclass tu es la meilleure version de toi même',
                     'changes' => [
                         'Santé avant' => $before,

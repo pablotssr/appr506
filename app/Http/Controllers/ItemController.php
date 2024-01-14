@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
 {
-    //
+    
     public function createShop(Request $request){
         Shop::truncate();
 
@@ -152,7 +152,7 @@ class ItemController extends Controller
                 'id' => $item->id,
                 'user_id' => $item->user_id,
                 'item_id' => $item->item_id,
-                'item_name' => $itemName, // Get the name of the item
+                'item_name' => $itemName, 
             ];
         });
         

@@ -26,6 +26,7 @@ Route::post('/auth/login', [AuthController::class, 'loginUser']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/pet', [PetController::class, 'showOrCreate']);
     Route::post('/pet', [PetController::class,'store']);

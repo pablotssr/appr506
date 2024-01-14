@@ -12,7 +12,7 @@ use App\Http\Controllers\EventController;
 
 class ActionController extends Controller
 {
-    //
+
     public function laver(Request $request)
     {
         $user = Auth::user();
@@ -34,10 +34,10 @@ class ActionController extends Controller
         }
         $score = 0;
         $actionDone = new DiaryController();
-        $responseAction = $actionDone->actionDone($laver, $event_id,$score, $request);
+        $responseAction = $actionDone->actionDone($laver, $event_id, $score, $request);
 
         if ($responseAction->getStatusCode() !== 200) {
-            return $responseAction; 
+            return $responseAction;
         }
 
         $pet->clean += $laver->effect;
@@ -50,9 +50,10 @@ class ActionController extends Controller
                 'Propreté_après' => $pet->clean
             ],
             'Pet' => $pet,
+            'test' => $responseAction
         ];
-        
-        return response()->json(['actionDone' => $responseAction,'laver' => $response], 200);
+
+        return response()->json(['actionDone' => $responseAction, 'laver' => $response], 200);
     }
 
     public function caresse(Request $request)
@@ -74,27 +75,27 @@ class ActionController extends Controller
         if ($pet->mental == 100) {
             return response()->json(['message' => 'il est déjà o max pas besoin', 'pet' => $pet], 200);
         }
-        $score=0;
+        $score = 0;
         $actionDone = new DiaryController();
-        $responseAction = $actionDone->actionDone($caresse, $event_id, $score,$request);
+        $responseAction = $actionDone->actionDone($caresse, $event_id, $score, $request);
 
         if ($responseAction->getStatusCode() !== 200) {
-            return $responseAction; 
+            return $responseAction;
         }
 
         $pet->mental += $caresse->effect;
         $pet->save();
 
         $response = [
-                'Message' => 'ptite tape sur le front la',
-                'Changes' => [
-                    'Mental_avant' => $before,
-                    'Mental_après' => $pet->mental
-                ],
-                'pet' => $pet,
-            ];
-        
-        return response()->json(['actionDone' => $responseAction,'caresser' => $response], 200);
+            'Message' => 'ptite tape sur le front la',
+            'Changes' => [
+                'Mental_avant' => $before,
+                'Mental_après' => $pet->mental
+            ],
+            'pet' => $pet,
+        ];
+
+        return response()->json(['actionDone' => $responseAction, 'caresser' => $response], 200);
 
     }
 
@@ -107,21 +108,21 @@ class ActionController extends Controller
         if (!$pet) {
             return response()->json(['message' => 'User does not have a pet'], 400);
         }
-        
+
         $give = Action::where('name', 'give object')->first();
         if (!$give) {
             return response()->json(['message' => 'not found'], 400);
         }
-        
+
         $event_id = null;
         $score = 0;
         $actionDone = new DiaryController();
-        $responseAction = $actionDone->actionDone($give, $event_id,$score,$request);
+        $responseAction = $actionDone->actionDone($give, $event_id, $score, $request);
 
         if ($responseAction->getStatusCode() !== 200) {
             return $responseAction;
         }
-        
+
         $donner = $request->input('item_Id');
         $item = Inventory::find($donner);
 
@@ -143,15 +144,15 @@ class ActionController extends Controller
             $item->delete();
 
             $response = [
-                    'tu_a_donné' => "{$b->name} à {$pet->name}",
-                    'changes' => [
-                        'Mental_avant' => $before,
-                        'Mental_après' => $pet->mental
-                    ],
-                    'pet' => $pet,
-                ];
-                
-            } elseif ($item->item_id == 2) {
+                'tu_a_donné' => "{$b->name} à {$pet->name}",
+                'changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental
+                ],
+                'pet' => $pet,
+            ];
+
+        } elseif ($item->item_id == 2) {
             $before = $pet->mental;
 
             $pet->mental -= $b->effect;
@@ -159,14 +160,14 @@ class ActionController extends Controller
             $item->delete();
 
             $response = [
-                    'tu_a_donné' => "{$b->name} à {$pet->name}",
-                    'changes' => [
-                        'Mental_avant' => $before,
-                        'Mental_après' => $pet->mental
-                    ],
-                    'pet' => $pet,
-                ];
-            } elseif ($item->item_id == 3) {
+                'tu_a_donné' => "{$b->name} à {$pet->name}",
+                'changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental
+                ],
+                'pet' => $pet,
+            ];
+        } elseif ($item->item_id == 3) {
             $before = $pet->mental;
             $before2 = $pet->health;
 
@@ -180,16 +181,16 @@ class ActionController extends Controller
             $item->delete();
 
             $response = [
-                    'tu_a_donné' => "{$b->name} à {$pet->name}",
-                    'changes' => [
-                        'Mental_avant' => $before,
-                        'Mental_après' => $pet->mental,
-                        'Santé_avant' => $before2,
-                        'Santé_après' => $pet->health
-                    ],
-                    'pet' => $pet,
-                ];
-            } elseif ($item->item_id == 4) {
+                'tu_a_donné' => "{$b->name} à {$pet->name}",
+                'changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental,
+                    'Santé_avant' => $before2,
+                    'Santé_après' => $pet->health
+                ],
+                'pet' => $pet,
+            ];
+        } elseif ($item->item_id == 4) {
             $before = $pet->mental;
             $before2 = $pet->health;
 
@@ -199,16 +200,16 @@ class ActionController extends Controller
             $item->delete();
 
             $response = [
-                    'tu_a_donné' => "{$b->name} à {$pet->name}",
-                    'changes' => [
-                        'Mental_avant' => $before,
-                        'Mental_après' => $pet->mental,
-                        'Santé_avant' => $before2,
-                        'Santé_après' => $pet->health
-                    ],
-                    'pet' => $pet,
-                ];
-            } elseif ($item->item_id == 5) {
+                'tu_a_donné' => "{$b->name} à {$pet->name}",
+                'changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental,
+                    'Santé_avant' => $before2,
+                    'Santé_après' => $pet->health
+                ],
+                'pet' => $pet,
+            ];
+        } elseif ($item->item_id == 5) {
             $before = $pet->mental;
             $before2 = $pet->health;
 
@@ -222,16 +223,16 @@ class ActionController extends Controller
             $item->delete();
 
             $response = [
-                    'tu_a_donné' => "{$b->name} à {$pet->name}",
-                    'changes' => [
-                        'Mental_avant' => $before,
-                        'Mental_après' => $pet->mental,
-                        'Santé_avant' => $before2,
-                        'Santé_après' => $pet->health
-                    ],
-                    'pet' => $pet,
-                ];
-            } elseif ($item->item_id == 6) {
+                'tu_a_donné' => "{$b->name} à {$pet->name}",
+                'changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental,
+                    'Santé_avant' => $before2,
+                    'Santé_après' => $pet->health
+                ],
+                'pet' => $pet,
+            ];
+        } elseif ($item->item_id == 6) {
             $before = $pet->mental;
             $before2 = $pet->health;
 
@@ -246,20 +247,20 @@ class ActionController extends Controller
 
 
             $response = [
-                    'tu_a_donné' => "{$b->name} à {$pet->name}",
-                    'changes' => [
-                        'Mental_avant' => $before,
-                        'Mental_après' => $pet->mental,
-                        'Santé_avant' => $before2,
-                        'Santé_après' => $pet->health
-                    ],
-                    'pet' => $pet,
-                ];
-            } 
+                'tu_a_donné' => "{$b->name} à {$pet->name}",
+                'changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental,
+                    'Santé_avant' => $before2,
+                    'Santé_après' => $pet->health
+                ],
+                'pet' => $pet,
+            ];
+        }
 
-            return response()->json(['actionDone' => $responseAction,'giveitem' => $response], 200);
+        return response()->json(['actionDone' => $responseAction, 'giveitem' => $response], 200);
     }
-        
+
     public function snake(Request $request)
     {
         $user = Auth::user();
@@ -278,7 +279,7 @@ class ActionController extends Controller
         $event_id = null;
 
         $actionDone = new DiaryController();
-        $responseAction = $actionDone->actionDone($snake, $event_id,$score,$request);
+        $responseAction = $actionDone->actionDone($snake, $event_id, $score, $request);
 
         if ($responseAction->getStatusCode() !== 200) {
             return $responseAction;
@@ -292,38 +293,38 @@ class ActionController extends Controller
             $pet->save();
 
             $response = [
-                    'Score' => $score,
-                    'Argent_gagné' => $score,
-                    'Argent_total' => $user->gold,
-                    'Message' => 'pas fou la game',
-                    'Changes' => [
-                        'Mental_avant' => $before,
-                        'Mental_après' => $pet->mental
-                    ],
-                    'Pet' => $pet,
-                ];
-            } else {
-                $pet->mental += $score;
-                $pet->clean -= 15;
-                $user->gold += $score;
-                $user->save();
-                $pet->save();
+                'Score' => $score,
+                'Argent_gagné' => $score,
+                'Argent_total' => $user->gold,
+                'Message' => 'pas fou la game',
+                'Changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental
+                ],
+                'Pet' => $pet,
+            ];
+        } else {
+            $pet->mental += $score;
+            $pet->clean -= 15;
+            $user->gold += $score;
+            $user->save();
+            $pet->save();
 
-                $response = [
-                    'score' => $score,
-                    'argent_gagné' => $score,
-                    'Argent_total' => $user->gold,
-                    'message' => 'respect',
-                    'changes' => [
-                        'Mental_avant' => $before,
-                        'Mental_après' => $pet->mental
+            $response = [
+                'score' => $score,
+                'argent_gagné' => $score,
+                'Argent_total' => $user->gold,
+                'message' => 'respect',
+                'changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental
 
-                    ],
-                    'pet' => $pet
-                ];
-            }
-            
-            return response()->json(['actionDone' => $responseAction,'snake' => $response], 200);
+                ],
+                'pet' => $pet
+            ];
+        }
+
+        return response()->json(['actionDone' => $responseAction, 'snake' => $response], 200);
     }
 
     public function run(Request $request)
@@ -344,7 +345,7 @@ class ActionController extends Controller
         $event_id = null;
 
         $actionDone = new DiaryController();
-        $responseAction = $actionDone->actionDone($run, $event_id,$score,$request);
+        $responseAction = $actionDone->actionDone($run, $event_id, $score, $request);
 
         if ($responseAction->getStatusCode() !== 200) {
             return $responseAction;
@@ -356,33 +357,33 @@ class ActionController extends Controller
             $user->save();
             $pet->clean -= 10;
             $pet->save();
-            
+
             $response = [
-                    'Score' => $score,
-                    'Message' => 'pas fou la game',
-                    'Changes' => [
-                        'Mental_avant' => $before,
-                        'Mental_après' => $pet->mental
-                    ],
-                    'Pet' => $pet
-                ];
-            } else {
-                $pet->mental += $score;
-                $pet->clean -= 15;
-                $pet->save();
-                $user->gold += $score;
-                $user->save();
-                $response = [
-                    'Score' => $score,
-                    'Message' => 'gg',
-                    'Changes' => [
-                        'Mental_avant' => $before,
-                        'Mental_après' => $pet->mental
-                    ],
-                    'Pet' => $pet
-                ];
-            } 
-            return response()->json(['actionDone' => $responseAction,'run' => $response], 200);
+                'Score' => $score,
+                'Message' => 'pas fou la game',
+                'Changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental
+                ],
+                'Pet' => $pet
+            ];
+        } else {
+            $pet->mental += $score;
+            $pet->clean -= 15;
+            $pet->save();
+            $user->gold += $score;
+            $user->save();
+            $response = [
+                'Score' => $score,
+                'Message' => 'gg',
+                'Changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental
+                ],
+                'Pet' => $pet
+            ];
+        }
+        return response()->json(['actionDone' => $responseAction, 'run' => $response], 200);
     }
     public function maths(Request $request)
     {
@@ -397,14 +398,14 @@ class ActionController extends Controller
         if (!$maths) {
             return response()->json(['message' => 'not found'], 400);
         }
-        
+
         $event_id = null;
         $before = $pet->mental;
         $before2 = $pet->iq;
         $score = $request->input('score') + 1;
 
         $actionDone = new DiaryController();
-        $responseAction = $actionDone->actionDone($maths, $event_id,$score,$request);
+        $responseAction = $actionDone->actionDone($maths, $event_id, $score, $request);
 
         if ($responseAction->getStatusCode() !== 200) {
             return $responseAction;
@@ -417,53 +418,53 @@ class ActionController extends Controller
             $user->gold += $score;
             $user->save();
             $response = [
-                    'Score' => $score,
-                    'Message' => 'eh beh',
-                    'Changes' => [
-                        'Mental_avant' => $before,
-                        'Mental_après' => $pet->mental,
-                        'QI_avant' => $before2,
-                        'QI_après' => $pet->iq,
-                    ],
-                    'pet' => $pet
-                ];
-            } elseif ($score == 3 || $score == 4 || $score == 5 || $score == 6 || $score == 7) {
+                'Score' => $score,
+                'Message' => 'eh beh',
+                'Changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental,
+                    'QI_avant' => $before2,
+                    'QI_après' => $pet->iq,
+                ],
+                'pet' => $pet
+            ];
+        } elseif ($score == 3 || $score == 4 || $score == 5 || $score == 6 || $score == 7) {
             $pet->mental += $score;
             $pet->iq += $score * 2;
             $pet->save();
             $user->gold += $score * 2;
             $user->save();
             $response = [
-                    'score' => $score,
-                    'message' => 'ok',
-                    'changes' => [
-                        'Mental_avant' => $before,
-                        'Mental_après' => $pet->mental,
-                        'QI_avant' => $before2,
-                        'QI_après' => $pet->iq,
-                    ],
-                    'pet' => $pet
-                ];
-            } elseif ($score == 8 || $score == 9 || $score == 10) {
+                'score' => $score,
+                'message' => 'ok',
+                'changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental,
+                    'QI_avant' => $before2,
+                    'QI_après' => $pet->iq,
+                ],
+                'pet' => $pet
+            ];
+        } elseif ($score == 8 || $score == 9 || $score == 10) {
             $pet->mental += 15;
             $pet->iq += $score * 2;
             $pet->save();
             $user->gold += $score * 2;
             $user->save();
             $response = [
-                    'Score' => $score,
-                    'Message' => 'gg',
-                    'Changes' => [
-                        'Mental_avant' => $before,
-                        'Mental_après' => $pet->mental,
-                        'QI_avant' => $before2,
-                        'QI_après' => $pet->iq,
-                    ],
-                    'pet' => $pet
-                ];
-            } 
-            
-            return response()->json(['actionDone' => $responseAction,'maths' => $response], 200);
+                'Score' => $score,
+                'Message' => 'gg',
+                'Changes' => [
+                    'Mental_avant' => $before,
+                    'Mental_après' => $pet->mental,
+                    'QI_avant' => $before2,
+                    'QI_après' => $pet->iq,
+                ],
+                'pet' => $pet
+            ];
+        }
+
+        return response()->json(['actionDone' => $responseAction, 'maths' => $response], 200);
     }
 
 }
